@@ -13,7 +13,8 @@ public class MapNode
     int heuristicCost = 10;
     public int fullCost;
     public bool isWalkable = true;
-    MapNode parentNode;
+    MapNode parentNode = null;
+    public string list = ".";
 
     public MapNode(int x, int y, bool isWalkable)
     {
@@ -22,7 +23,13 @@ public class MapNode
         this.isWalkable = isWalkable;
     }
 
-    public void SetCost(int heuristic)
+    public void SetMovementCost(int heuristic)
+    {
+        heuristicCost = heuristic;
+        fullCost = movementCost + heuristicCost + parentCost;
+    }
+
+    public void SetHeuristicCost(int heuristic)
     {
         heuristicCost = heuristic;
         fullCost = movementCost + heuristicCost + parentCost;
@@ -30,7 +37,6 @@ public class MapNode
 
     public void SetParent(MapNode node){
         parentNode = node;
-        parentCost = node.movementCost;
         fullCost = movementCost + heuristicCost + parentCost;
     }
 
@@ -95,7 +101,7 @@ public class Map {
         int levels = 0;
         foreach(MapNode neighbor in neighbors){
             if(neighbor.isWalkable){
-                content += ".";
+                content += neighbor.list;
             }
             else
             {
@@ -135,7 +141,7 @@ public class Map {
                 if(IsWithinBounds(x + xBounds, y + yBounds)){
                     MapNode node = nodes[y + yBounds][x + xBounds];
                     if (node != null) { 
-                        node.movementCost = (xBounds == 0 || yBounds == 0) ? 10 : 14;
+                        //node.movementCost = (xBounds == 0 || yBounds == 0) ? 10 : 14;
                         neighbors.Add(node);
                     }
                     else

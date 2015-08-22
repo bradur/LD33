@@ -23,6 +23,9 @@ public class MapData: MonoBehaviour {
     public Text mapDebug;
     public MapSquare[] tiles;
     int[] firstGids;
+    int endX;
+    int endY;
+    Hero hero;
 
     public void Init(TextAsset mapFile, Material tileSheet, Material wallMaterial)
     {
@@ -64,6 +67,7 @@ public class MapData: MonoBehaviour {
         {
             GenerateObjects(map.ObjectGroups);
         }
+        hero.SetEndSpot(endX, endY);
 
         foreach (Transform child in tempContainer)
         {
@@ -238,7 +242,13 @@ public class MapData: MonoBehaviour {
 
                 if (objectType == "Hero")
                 {
-                    spawnedObject.GetComponent<Hero>().Init(tileMap, xpos, ypos);
+                    hero = spawnedObject.GetComponent<Hero>();
+                    hero.Init(tileMap, xpos, ypos);
+                }
+                if (objectType == "End")
+                {
+                    endX = xpos;
+                    endY = ypos;
                 }
                 /*TmxObjectGroup.TmxObject startEnd = ObjectGroups[i].Objects[j];
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="48" height="27" tilewidth="128" tileheight="128" nextobjectid="7">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="48" height="27" tilewidth="128" tileheight="128" nextobjectid="13">
  <properties>
   <property name="Title" value="The Hero Has Arrived"/>
  </properties>
@@ -9,8 +9,8 @@
  <tileset firstgid="65" name="wall" tilewidth="128" tileheight="128" tilecount="1">
   <image source="../Resources/Images/wall.png" width="128" height="128"/>
  </tileset>
- <tileset firstgid="66" name="heroph" tilewidth="128" tileheight="128" tilecount="1">
-  <image source="../Resources/Images/heroph.png" width="128" height="128"/>
+ <tileset firstgid="66" name="heroph" tilewidth="128" tileheight="128" tilecount="4">
+  <image source="../Resources/Images/heroph.png" width="256" height="256"/>
  </tileset>
  <layer name="Ground" width="48" height="27">
   <properties>
@@ -25,7 +25,7 @@
    <property name="Type" value="Wall"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJztl1EKACEIRLta979U/7uFo4zmsvMg6Cd9SCmNIVAmuLqCuMk/j/nY7+7Ml/ytfTfkfxfU/0Y/9fb2bjW3HOTPIzL3u/kzY1S/32z/bE71ss506f+7fPLH4kRA5hBrflW/V08++cfI8q/6v2T4M+Ix8v7N39OjWLD8xZsF8RErKw==
+   eJztlVEKgDAMQ3e13f9S/uu0SWm3CHkgDKbtY7h0DIMywUcVxM3+fczbevXP/Mk/Wqth/7Og/ifylM12tTOPHOxfR2buq/lX1th9f7v9u3k7r+gblfxf9bM/VicDMoeq5tfu+8r0U/Nn803Nn+33lfOZepm+zF7mXftzNVl/JqOqqPI3Ty43Myts
   </data>
  </layer>
  <objectgroup name="Hero">
@@ -33,5 +33,11 @@
    <property name="Type" value="Hero"/>
   </properties>
   <object id="6" gid="66" x="1536" y="3072" width="128" height="128"/>
+ </objectgroup>
+ <objectgroup name="End">
+  <properties>
+   <property name="Type" value="End"/>
+  </properties>
+  <object id="12" gid="67" x="4736" y="1408" width="128" height="128"/>
  </objectgroup>
 </map>
