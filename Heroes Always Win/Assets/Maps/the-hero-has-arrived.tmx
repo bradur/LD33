@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="128" tileheight="128" nextobjectid="1">
+ <properties>
+  <property name="Title" value="The Hero Has Arrived"/>
+ </properties>
+ <tileset firstgid="1" name="tile_sheet" tilewidth="128" tileheight="128" tilecount="64">
+  <image source="../Resources/Images/tile_sheet.png" width="1024" height="1024"/>
+ </tileset>
+ <layer name="Ground" width="30" height="30">
+  <data encoding="base64" compression="zlib">
+   eJzt1EEKACAIRNHq/oduGy1qTAuMP+Cmhc8gK4UQMqdt6ldXPcfFjXBP3reyH7g2d2XUoaz9PHd74aqz7Prj6q6SLK5nr3H9/1MWN2rO2+mHVwHT
+  </data>
+ </layer>
+</map>
