@@ -14,7 +14,12 @@ public class HeroMovement : MonoBehaviour {
     //MapNode currentNode;
     MapNode destination;
     List<MapNode> finalPath = new List<MapNode>();
-
+    Vector3 targetPosition;
+    public float movementInterval = 0.5f;
+    public float movementDuration = 0.25f;
+    float movementTimer = 0f;
+    Transform thisTransform;
+    bool moving;
     // Use this for initialization
     void Start () {
 
@@ -29,7 +34,8 @@ public class HeroMovement : MonoBehaviour {
         debugText.text = map.NeighborsToString(currentNode);
         destination = map.GetNode(endX, endY);
         //SearchPath(currentNode);
-        StartCoroutine("SearchPath", currentNode);
+        SearchPath(currentNode);
+        thisTransform = GetComponent<Transform>();
     }
 
 
@@ -47,29 +53,58 @@ public class HeroMovement : MonoBehaviour {
         this.destination = destination;
     }
 
-    List<MapNode> GetFinalPath(MapNode node)
+    IEnumerator Move()
     {
-        List<MapNode> path = new List<MapNode>();
+        yield return new WaitForSeconds(movementInterval);
+
+        if (finalPath.Count > 0)
+        {
+            MapNode targetNode = finalPath[finalPath.Count - 1];
+            targetPosition = new Vector3(-targetNode.x + 0.5f, thisTransform.position.y, targetNode.y - 0.5f);
+            //Debug.Log("From [" + targetNode.x + ", " + targetNode.y  + "] to " + targetPosition);
+            finalPath.RemoveAt(finalPath.Count - 1);
+            moving = true;
+            StartCoroutine("Move");
+        }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (moving)
+        {
+            movementTimer += Time.fixedDeltaTime / movementDuration;
+            thisTransform.position = Vector3.MoveTowards(thisTransform.position, targetPosition, movementTimer);
+            if(Vector3.Distance(thisTransform.position, targetPosition) < 0.1f){
+                thisTransform.position = targetPosition;
+                movementTimer = 0;
+                moving = false;
+            }
+        }
+    }
+
+    void SetFinalPath(MapNode node)
+    {
         while (true)
         {
             MapNode parentNode = node.GetParent();
             if (parentNode != null)
             {
-                Debug.Log("[" + parentNode.x + ", " + parentNode.y + "]");
-                path.Add(parentNode);
+//                Debug.Log("[" + parentNode.x + ", " + parentNode.y + "]");
+                finalPath.Add(parentNode);
                 node = parentNode;
             }
             else
             {
+                finalPath.RemoveAt(finalPath.Count-1);
                 break;
             }
         }
-        return path;
+        StartCoroutine("Move");
     }
 
-    IEnumerator SearchPath(MapNode currentNode)
+    void SearchPath(MapNode currentNode)
     {
-        yield return new WaitForSeconds(1f);
         debugText.text = map.NeighborsToString(currentNode);
         openNodes.Add(currentNode);                                             // add current node to open list
         currentNode.list = "o";
@@ -105,9 +140,9 @@ public class HeroMovement : MonoBehaviour {
                     if (neighbor == destination)
                     {
                         targetFound = true;
-                        Debug.Log("Target found!");
-                        finalPath = GetFinalPath(neighbor);
-                        StopAllCoroutines();
+                        //Debug.Log("Target found!");
+                        SetFinalPath(neighbor);
+                        //StopAllCoroutines();
                     }
                     else
                     {
@@ -127,14 +162,10 @@ public class HeroMovement : MonoBehaviour {
                 openNodes.Remove(lowestCostNode);
                 lowestCostNode.list = ".";
                 //SearchPath(lowestCostNode);
-                Debug.Log("Starting another Coroutine!");
-                StartCoroutine("SearchPath", lowestCostNode);
+                //Debug.Log("Starting another Coroutine!");
+                SearchPath(lowestCostNode);
             }
         }
     }
 
-    // Update is called once per frame
-    void Update () {
-    
-    }
 }

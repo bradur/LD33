@@ -7,8 +7,6 @@ public class Hero : MonoBehaviour {
     Map map;
     int startX;
     int startY;
-    int endX;
-    int endY;
 
     public void Init(Map map, int startX, int startY)
     {
@@ -20,8 +18,6 @@ public class Hero : MonoBehaviour {
 
     public void SetEndSpot(int endX, int endY)
     {
-        this.endX = endX;
-        this.endY = endY;
         movement.Init(map, startX, startY, endX, endY);
     }
     
