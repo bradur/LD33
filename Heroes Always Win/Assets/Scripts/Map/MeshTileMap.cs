@@ -42,9 +42,16 @@ public class MeshTileMap : MonoBehaviour {
     private int squareCount;
     private Mesh mesh;
     public MapData mapData;
+    MeshRenderer meshRenderer;
+    public bool selectGround = false;
+    public Color hoverColor;
+    Color originalColor;
+    public bool isHovering;
 
     void Start () {
         GenerateMesh();
+        meshRenderer = GetComponent<MeshRenderer>();
+        originalColor = meshRenderer.material.color;
     }
 
     void GetTiles()
@@ -85,6 +92,35 @@ public class MeshTileMap : MonoBehaviour {
                 //print("(" + (x) + ", " + (size - z - 1) + ") "+(x + size * z));
                 tiles[x + size * z] = new Vector2(x, size - z - 1);
             }
+        }
+    }
+
+    public void SelectGround()
+    {
+        selectGround = true;
+    }
+
+    public void UnselectGround()
+    {
+        selectGround = false;
+        meshRenderer.material.color = originalColor;
+        isHovering = false;
+    }
+
+    void OnMouseEnter(){
+        if (selectGround)
+        {
+            meshRenderer.material.color = hoverColor;
+            isHovering = true;
+        }
+    }
+
+    void OnMouseExit()
+    {
+        if (selectGround)
+        {
+            meshRenderer.material.color = originalColor;
+            isHovering = false;
         }
     }
 
@@ -130,7 +166,10 @@ public class MeshTileMap : MonoBehaviour {
 
         for (int i = 0; i < mapData.tiles.Length; i++)
         {
-
+            if (mapData.tiles[i].tileSetId == 0)
+            {
+                continue;
+            }
             GenerateSquare(mapData.tiles[i].x, mapData.tiles[i].y, mapData.tiles[i].tileSetId);
         }
 
