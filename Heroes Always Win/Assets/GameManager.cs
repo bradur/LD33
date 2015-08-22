@@ -8,8 +8,8 @@ public class GameManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        meshTileMap.SetMap(tmxMap);
-        meshTileMap.GenerateMesh();
+        //meshTileMap.SetMap(tmxMap);
+        //meshTileMap.GenerateMesh();
     }
     
     // Update is called once per frame

@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="128" tileheight="128" nextobjectid="1">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="48" height="27" tilewidth="128" tileheight="128" nextobjectid="1">
  <properties>
   <property name="Title" value="The Hero Has Arrived"/>
  </properties>
  <tileset firstgid="1" name="tile_sheet" tilewidth="128" tileheight="128" tilecount="64">
   <image source="../Resources/Images/tile_sheet.png" width="1024" height="1024"/>
  </tileset>
- <layer name="Ground" width="30" height="30">
+ <tileset firstgid="65" name="wall" tilewidth="128" tileheight="128" tilecount="1">
+  <image source="../Resources/Images/wall.png" width="128" height="128"/>
+ </tileset>
+ <layer name="Ground" width="48" height="27">
   <data encoding="base64" compression="zlib">
-   eJzt1EEKACAIRNHq/oduGy1qTAuMP+Cmhc8gK4UQMqdt6ldXPcfFjXBP3reyH7g2d2XUoaz9PHd74aqz7Prj6q6SLK5nr3H9/1MWN2rO2+mHVwHT
+   eJzt1EsOABAMAFHc/9C2FqJNfVrMJDYWvIg0JfqpIqzoveLX7kcLv2/4fZP8nvNIMxfx7+sm/8iam6V1nX7vV/y9vZn/cyr88nk7s97n5V813/Dbwj8+B7/tXvq7CrNgAc8=
+  </data>
+ </layer>
+ <layer name="Wall" width="48" height="27">
+  <properties>
+   <property name="Type" value="Wall"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztl1EKACEIRLta979U/7uFo4zmsvMg6Cd9SCmNIVAmuLqCuMk/j/nY7+7Ml/ytfTfkfxfU/0Y/9fb2bjW3HOTPIzL3u/kzY1S/32z/bE71ss506f+7fPLH4kRA5hBrflW/V08++cfI8q/6v2T4M+Ix8v7N39OjWLD8xZsF8RErKw==
   </data>
  </layer>
 </map>

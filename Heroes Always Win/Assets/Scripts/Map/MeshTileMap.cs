@@ -18,7 +18,7 @@ public class MeshTileMap : MonoBehaviour {
     public float tileUnit = 0.125f;
     public TextAsset mapFile;
 
-
+    public Material wallMaterial;
     [HideInInspector]
     public Vector2[] tiles;
     
@@ -41,7 +41,7 @@ public class MeshTileMap : MonoBehaviour {
     private List<Vector2> uv = new List<Vector2>();
     private int squareCount;
     private Mesh mesh;
-    MapData mapData;
+    public MapData mapData;
 
     void Start () {
         GenerateMesh();
@@ -126,7 +126,7 @@ public class MeshTileMap : MonoBehaviour {
     void LoadMap()
     {
 
-        mapData = new MapData(mapFile, GetComponent<MeshRenderer>().sharedMaterial);
+        mapData.Init(mapFile, GetComponent<MeshRenderer>().sharedMaterial, wallMaterial);
 
         for (int i = 0; i < mapData.tiles.Length; i++)
         {
@@ -198,7 +198,7 @@ public class MeshTileMap : MonoBehaviour {
         uv.Clear();
         //tiles.Clear();
 
-        Debug.Log ("Done Mesh!");
+
     }
     
     

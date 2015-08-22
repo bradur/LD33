@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.Xml.Linq;
 
-public class MapData {
+public class MapData: MonoBehaviour {
 
     public MapSquare[] tiles;
     public int horizontal_tiles;
@@ -14,15 +14,28 @@ public class MapData {
     public int tileCount;
 
     private GameObject wallPref;
+    public Transform tileContainer;
+    public Transform objectContainer;
+    public Transform tempContainer;
     public string mapTitle;
+    private Material wallMaterial;
+    int[] firstGids;
 
-    public MapData(TextAsset mapFile, Material tileSheet)
+    public void Init(TextAsset mapFile, Material tileSheet, Material wallMaterial)
     {
 
+        foreach (Transform child in tileContainer)
+        {
+            DestroyObject(child.gameObject);
+        }
+        foreach (Transform child in objectContainer)
+        {
+            DestroyObject(child.gameObject);
+        }
         TmxMap map;
 
         map = new TmxMap(mapFile.text, "rnd");
-
+        this.wallMaterial = wallMaterial;
 
         horizontal_tiles = map.Width;
         vertical_tiles = map.Height;
@@ -30,9 +43,14 @@ public class MapData {
         tile_width = map.TileWidth;
         tile_height = map.TileHeight;
 
-        tileSetName = map.Tilesets[0].Name;
+        //tileSetName = map.Tilesets[0].Name;
+        firstGids = new int[map.Tilesets.Count];
         mapTitle = map.Properties["Title"];
 
+        if (map.Layers.Count > 0)
+        {
+            GenerateTiles(map.Layers);
+        }
         tileCount = map.Layers[0].Tiles.Count;
         tiles = new MapSquare[tileCount];
         for (int i = 0; i < tileCount; i++)
@@ -40,10 +58,28 @@ public class MapData {
             tiles[i] = new MapSquare(map.Layers[0].Tiles[i]);
         }
 
-        if (map.ObjectGroups.Count > 0) {
+        if (map.ObjectGroups.Count > 0)
+        {
             GenerateObjects(map.ObjectGroups);
         }
 
+        foreach (Transform child in tempContainer)
+        {
+            DestroyObject(child.gameObject);
+        }
+    }
+
+    public void DestroyObject(GameObject objectToDestroy)
+    {
+        if (Application.isPlaying)
+        {
+            Destroy(objectToDestroy);
+        }
+        else
+        {
+            DestroyImmediate(objectToDestroy);
+        }
+    }
 /*        int wallCount = map.ObjectGroups[2].Objects.Count;
         CreateWall(tileSheet);
 
@@ -77,6 +113,74 @@ public class MapData {
 
         }*/
 
+
+    public void GenerateTiles(TmxLayerList layerList)
+    {
+
+        int layerCount = layerList.Count;
+        for (int i = 0; i < layerCount; i += 1)
+        {
+            TmxLayer layer = layerList[i];
+            int tileCount = layer.Tiles.Count;
+            PropertyDict properties = layer.Properties;
+
+            string tileType = "Ground";
+            if (properties.ContainsKey("Type"))
+            {
+                tileType = properties["Type"];
+            }
+            Transform layerContainer = new GameObject(layer.Name).transform;
+            layerContainer.rotation = Quaternion.identity;
+            layerContainer.transform.SetParent(tileContainer);
+
+            //Debug.Log(tileCount);
+
+            for (int j = 0; j < tileCount; j += 1)
+            {
+                TmxLayerTile tmxTile = layer.Tiles[j];
+                int tileSetId = FindTileSetId(tmxTile.Gid);
+                if (tileSetId == -1 || tmxTile.Gid == 0)
+                {
+                    continue;
+                }
+                if (tileType == "Wall")
+                {
+                    int xpos = (int)tmxTile.X;
+                    int ypos = (int)tmxTile.Y;
+                    Vector3 worldPos = new Vector3(-xpos + 0.5f, 0.5f, ypos-0.5f);
+                    //Debug.Log("[" + tmxTile.X + ", " + tmxTile.Y + "]");
+                    GameObject spawnedTile;
+                    if (wallPref == null) {
+                        CreateWall();
+                    }
+                    spawnedTile = (GameObject)Instantiate(wallPref, worldPos, Quaternion.identity);
+                    spawnedTile.name = "Wall_" + tmxTile.Gid;
+                    spawnedTile.transform.position = worldPos;
+                    spawnedTile.transform.parent = layerContainer;
+                    
+                }
+
+
+            }
+
+
+        }
+
+
+    }
+
+    int FindTileSetId(int gid)
+    {
+        // loop from last to first (largest gid first)
+        for (int i = firstGids.Length - 1; i >= 0; i--)
+        {
+            if (gid >= firstGids[i])
+            {
+                return firstGids[i];
+            }
+        }
+        // error: no such tileset
+        return -1;
     }
 
     public void GenerateObjects(TmxObjectGroupList objectGroupList){
@@ -86,15 +190,27 @@ public class MapData {
         {
             TmxObjectGroup objectGroup = objectGroupList[i];
             int objectCount = objectGroup.Objects.Count;
-            
+            PropertyDict properties = objectGroup.Properties;
             for (int j = 0; j < objectCount; j += 1)
             {
+                if (!properties.ContainsKey("Type"))
+                {
+                    continue;
+                    Debug.Log("ERROR: Object Layer \"" + objectGroup.Name + "\" doesn't have a Type property!");
+                }
+                string objectType = properties["Type"];
                 TmxObjectGroup.TmxObject tmxObject = objectGroup.Objects[j];
+
+                
 
                 int xpos = (int)tmxObject.X / tile_width;
                 int ypos = (int)tmxObject.Y / tile_height;
+
                 Vector3 worldPos = new Vector3(-xpos + 0.5f, 1f, ypos - 1.5f);
-                GameObject spawnedObject = new GameObject(tmxObject.Name);
+
+                GameObject spawnedObject = (GameObject)GameObject.Instantiate(Resources.Load("Objects/" + objectType), new Vector3(0f, 0f, 0f), Quaternion.identity);
+                spawnedObject.name = tmxObject.Name;
+
                 spawnedObject.transform.position = worldPos;
 
                 /*TmxObjectGroup.TmxObject startEnd = ObjectGroups[i].Objects[j];
@@ -120,23 +236,26 @@ public class MapData {
     }
 
     
-    void CreateWall(Material wallMaterial)
+    void CreateWall()
     {
         wallPref = (GameObject)GameObject.Instantiate(Resources.Load("Wall"), new Vector3(0f, 0f, 0f), Quaternion.identity);
         wallPref.GetComponent<Renderer>().material = wallMaterial;
+        wallPref.transform.parent = tempContainer;
         //Mesh mesh = wallPref.GetComponent<MeshFilter>().mesh;
         Mesh mesh = wallPref.GetComponent<MeshFilter>().sharedMesh;
-        Vector2 texture = new Vector2(1f, 7f);
-        float tileUnit = 0.125f;
-        float offset = tileUnit / 64 * 2;
-        int height = 8;
-        int offsetY = (int)(height - texture.y);
-        float margin = tileUnit / 64;
+        //Vector2 texture = new Vector2(1f, 1f);
+        float tileUnit = 1f;
+        //float offset = tileUnit / tile_width * 2;
+        //int height = 8;
+        //int offsetY = (int)(height - texture.y);
+        //float margin = tileUnit / tile_width;
 
-        float left = tileUnit * texture.x + texture.x * offset + margin;
-        float right = left + tileUnit + margin;
-        float bottom = tileUnit * texture.y - margin;
-        float top = bottom + tileUnit;
+        //float left = tileUnit * texture.x + texture.x * offset + margin;
+        //float right = left + tileUnit + margin;
+        //float bottom = tileUnit * texture.y - margin;
+        //float top = bottom + tileUnit;
+        float left = 0f;
+        float top = 1f;
 
         Rect wallText = new Rect(
             left,
@@ -144,8 +263,6 @@ public class MapData {
             tileUnit,
             tileUnit
         );
-
-        Debug.Log(wallText);
 
         Vector2 text1 = new Vector2(wallText.x, wallText.y);
         Vector2 text2 = new Vector2(wallText.x + tileUnit, wallText.y);
