@@ -38,6 +38,8 @@ public class AdjustableCamera : MonoBehaviour {
     
     // Update is called once per frame
     void Update () {
+
+        // ZOOM IN / OUT
         if (Input.GetAxis("Mouse ScrollWheel") < 0)
         {
             Camera.main.orthographicSize++;
@@ -47,6 +49,7 @@ public class AdjustableCamera : MonoBehaviour {
         }
         Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, orthographicSizeMin, orthographicSizeMax );
 
+        // PANNING START
         if (Input.GetMouseButtonDown(0))
         {
             isMoving = true;
@@ -54,17 +57,10 @@ public class AdjustableCamera : MonoBehaviour {
             dragOrigin = Input.mousePosition;
         }
 
+        // PANNING
         if (Input.GetMouseButton(0) && isMoving)
         {
-            //mouseDelta = Camera.main.ScreenToWorldPoint(Input.mousePosition - prevPos);
-            /*Vector3 difference = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - dragOrigin);
-            Vector3 cameraDiff = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position);
-            if (difference.x < cameraDiff.x || difference.z < cameraDiff.z)
-            {
-                Camera.main.transform.position = Vector3.MoveTowards(Camera.main.transform.position, dragOrigin, 0.2f);
-            }*/
             Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - dragOrigin);
-            // Debug.Log("[" + pos.x + ", " + pos.y + "]");
             Vector3 move = new Vector3(pos.x * panSpeed, transform.position.y, pos.y * panSpeed);
             transform.Translate(move, Space.World);
             float xPos = transform.position.x;
@@ -83,16 +79,16 @@ public class AdjustableCamera : MonoBehaviour {
                 zPos = cameraMinPosZ;
             }
             transform.position = new Vector3(xPos, originalpos.y, zPos);
-            //transform.Translate(-mouseDelta.x * panSpeed, transform.position.y, -mouseDelta.y * panSpeed);
-            //transform.position = new Vector3(transform.position.x, originalpos.y, transform.position.z);
-            //prevPos = Input.mousePosition;
         }
 
+        // PANNING STOP
         if (Input.GetMouseButtonUp(0))
         {
             isMoving = false;
         }
 
+
+        // RESET POS
         if (Input.GetKeyUp(KeyCode.Escape))
         {
             Camera.main.orthographicSize = originalSize;

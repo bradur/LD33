@@ -63,17 +63,20 @@ public class GameManager : MonoBehaviour {
         return false;
     }
 
+    // if user cancels use (esc key, click same item)
     public void CancelItemSelection()
     {
         selectedItem.UpdateCount(1);
         UnselectItem();
     }
 
+    // if user places item
     public void UseItem()
     {
         UnselectItem();
     }
 
+    // generic unselection of selected item
     public void UnselectItem()
     {
         if (selectedItem.placementArea == PlacementArea.Villain)
@@ -96,6 +99,7 @@ public class GameManager : MonoBehaviour {
             {
                 if (selectedItem.placementArea == PlacementArea.Villain)
                 {
+                    // if mouse is on top of placement area (this time meshTileMap)
                     if (meshTileMap.isHovering)
                     {
                         allowSpawn = true;
@@ -106,6 +110,7 @@ public class GameManager : MonoBehaviour {
                     float x = followSpriteTransform.position.x;
                     float z = followSpriteTransform.position.z;
 
+                    // SNAP TO GRID
                     float newx = Mathf.Round(x);
                     if (x - newx > 0)
                     {
