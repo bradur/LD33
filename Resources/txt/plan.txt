@@ -1,0 +1,17 @@
+Title       : Heroes Always Win
+Theme       : You are the Monster
+
+Objective   : Slow down the Hero
+
+Description :
+- You are the Garbauk, head of security at a local village Boss Monster's(Mornax the Malignant) lair.
+- You are in charge of placing minions, traps and other hindrances in the hallways and rooms so that the Hero may not reach the Boss (or at least not as fast).
+- "Setup-time", during which the Hero just strolls around and you can mount a defense.
+- For every HP you take from the Hero, the Boss Monster gives you gold
+- You need to take at least half of the Hero's health or he will kill you before you have a chance to run
+- Buy more hindrances & hire more minions from the shop with the gold(monster merchant?)
+- Different types of minions / hindrances:
+  * Minion, melee  + upgrades (more hp, damage)
+  * Minion, ranged + upgrades (more range, damage)
+  * Lock(to a pre-placed door) & Key (you need to drop the key somewhere [but this area is limited] )
+  * Mimic Chest
