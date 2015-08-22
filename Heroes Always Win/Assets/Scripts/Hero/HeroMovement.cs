@@ -30,8 +30,8 @@ public class HeroMovement : MonoBehaviour {
         this.map = map;
         Debug.Log("Hero start at: ["+ x + ", " + y + "]");
         MapNode currentNode = map.GetNode(x, y);
-        debugText = GameObject.FindGameObjectWithTag("DebugText").GetComponent<Text>();
-        debugText.text = map.NeighborsToString(currentNode);
+        //debugText = GameObject.FindGameObjectWithTag("DebugText").GetComponent<Text>();
+        //debugText.text = map.NeighborsToString(currentNode);
         destination = map.GetNode(endX, endY);
         //SearchPath(currentNode);
         SearchPath(currentNode);
@@ -105,7 +105,7 @@ public class HeroMovement : MonoBehaviour {
 
     void SearchPath(MapNode currentNode)
     {
-        debugText.text = map.NeighborsToString(currentNode);
+        //debugText.text = map.NeighborsToString(currentNode);
         openNodes.Add(currentNode);                                             // add current node to open list
         currentNode.list = "o";
         MapNode lowestCostNode = null;
