@@ -7,14 +7,16 @@ public class AdjustableCamera : MonoBehaviour {
     public float orthographicSizeMin = 1f;
     [Range(6, 16)]
     public float orthographicSizeMax = 6f;
-    [Range(0.5f, 5f)]
-    public float panSpeed = 1f;
+    [Range(0.05f, 1f)]
+    public float panSpeed = 0.05f;
     float originalSize;
     Vector3 originalpos;
     bool isMoving = false;
     Vector3 dragOrigin;
     Vector3 prevPos;
     Vector3 mouseDelta;
+    [Range(0.05f, 1f)]
+    public float keyPanSpeed = 0.05f;
 
 
     [Range(0, 3)]
@@ -38,6 +40,7 @@ public class AdjustableCamera : MonoBehaviour {
     
     // Update is called once per frame
     void Update () {
+        float ortSize = Camera.main.orthographicSize;
 
         // ZOOM IN / OUT
         if (Input.GetAxis("Mouse ScrollWheel") < 0)
@@ -47,7 +50,7 @@ public class AdjustableCamera : MonoBehaviour {
         if(Input.GetAxis("Mouse ScrollWheel") > 0){
             Camera.main.orthographicSize--;
         }
-        Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, orthographicSizeMin, orthographicSizeMax );
+        Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, orthographicSizeMin, orthographicSizeMax);
 
         // PANNING START
         if (Input.GetMouseButtonDown(0))
@@ -61,7 +64,7 @@ public class AdjustableCamera : MonoBehaviour {
         if (Input.GetMouseButton(0) && isMoving)
         {
             Vector3 pos = Camera.main.ScreenToViewportPoint(Input.mousePosition - dragOrigin);
-            Vector3 move = new Vector3(pos.x * panSpeed, transform.position.y, pos.y * panSpeed);
+            Vector3 move = new Vector3(pos.x * panSpeed * ortSize, transform.position.y, pos.y * panSpeed * ortSize);
             transform.Translate(move, Space.World);
             float xPos = transform.position.x;
             if (xPos > cameraMaxPosX)
@@ -87,9 +90,50 @@ public class AdjustableCamera : MonoBehaviour {
             isMoving = false;
         }
 
+        // PANNING WITH KEYS
+        float xDiff = 0;
+        float zDiff = 0;
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            xDiff += panSpeed * ortSize * 1f;
+        }
+        else if (Input.GetKey(KeyCode.RightArrow))
+        {
+            xDiff -= panSpeed * ortSize * 1f;
+        }
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            zDiff -= panSpeed * ortSize * 1f;
+        }
+        else if (Input.GetKey(KeyCode.DownArrow))
+        {
+            zDiff += panSpeed * ortSize * 1f;
+        }
+        if (xDiff != 0 || zDiff != 0) {
+            float newX = xDiff + transform.position.x;
+            float newZ = zDiff + transform.position.z;
+            if (newX > cameraMaxPosX)
+            {
+                newX = cameraMaxPosX;
+            }
+            else if (newX < cameraMinPosX)
+            {
+                newX = cameraMinPosX;
+            }
+            if (newZ > cameraMaxPosZ)
+            {
+                newZ = cameraMaxPosZ;
+            }
+            else if (newZ < cameraMinPosZ)
+            {
+                newZ = cameraMinPosZ;
+            }
+            transform.position = new Vector3(newX, transform.position.y, newZ);
+        }
+        
 
         // RESET POS
-        if (Input.GetKeyUp(KeyCode.Escape))
+        if (Input.GetKeyUp(KeyCode.F1))
         {
             Camera.main.orthographicSize = originalSize;
             Camera.main.transform.position = originalpos;

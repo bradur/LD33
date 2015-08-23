@@ -25,10 +25,10 @@ public class InventoryItem : MonoBehaviour {
 
     public void Select()
     {
-        if (gameManager.SelectInventoryItem(this))
-        {
-            UpdateCount(-1);
-        };
+        gameManager.SelectInventoryItem(this);
+        //{
+            //UpdateCount(-1);
+        //};
     }
 
     // Use this for initialization

@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour {
     public float inputZ = 15f;
     bool allowSpawn = false;
     bool anItemIsHovered = false;
+    bool itemMoveIsInProcess = false;
 
     public SpawnedItemHoverPopup itemPopup;
 
@@ -46,6 +47,7 @@ public class GameManager : MonoBehaviour {
 
     public bool SelectInventoryItem(InventoryItem item)
     {
+        
         if (tileMap == null)
         {
             tileMap = meshTileMap.mapData.tileMap;
@@ -64,6 +66,9 @@ public class GameManager : MonoBehaviour {
             {
                 itemPopup.DeActivate();
             }
+            if (!itemMoveIsInProcess) { 
+                item.UpdateCount(-1);
+            }
             return true;
         }
         else if (selectedItem == item)
@@ -76,14 +81,35 @@ public class GameManager : MonoBehaviour {
     // if user cancels use (esc key, click same item)
     public void CancelItemSelection()
     {
-        selectedItem.UpdateCount(1);
-        UnselectItem();
+        itemMoveIsInProcess = false;
+        if (selectedItem != null)
+        {
+            selectedItem.UpdateCount(1);
+            UnselectItem();
+        }
+        if (itemPopup != null && itemPopup.isActivated)
+        {
+            itemPopup.DeActivate();
+        }
+
+//        Debug.Log("Stop item move!");
     }
 
     // if user places item
     public void UseItem()
     {
+        InventoryItem cachedItem = selectedItem;
         UnselectItem();
+        if (cachedItem.itemCount > 0 && !itemMoveIsInProcess)
+        {
+            SelectInventoryItem(cachedItem);
+        }
+        else
+        {
+
+            //Debug.Log("Stop item move!");
+            itemMoveIsInProcess = false;
+        }
     }
 
     // generic unselection of selected item
@@ -132,6 +158,8 @@ public class GameManager : MonoBehaviour {
         {
             if (item.itemName == itemName)
             {
+//                Debug.Log("START item move!");
+                itemMoveIsInProcess = true;
                 meshTileMap.SelectComeBack();
                 SelectInventoryItem(item);
                 return true;

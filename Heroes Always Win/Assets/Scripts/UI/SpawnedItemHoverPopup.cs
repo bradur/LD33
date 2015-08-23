@@ -24,8 +24,11 @@ public class SpawnedItemHoverPopup : MonoBehaviour {
         isActivated = false;
         title.text = "";
         animator.SetTrigger("Hide");
-        itemOnGround.allowDeselect = true;
-        itemOnGround.Deselect();
+        if (itemOnGround != null)
+        {
+            itemOnGround.allowDeselect = true;
+            itemOnGround.Deselect();
+        }
     }
 
     public void RemoveItem()

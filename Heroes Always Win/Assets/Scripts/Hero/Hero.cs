@@ -45,7 +45,7 @@ public class Hero : MonoBehaviour {
     {
         if (targetItem == null)
         {
-            Debug.Log("Fight another day!");
+//            Debug.Log("Fight another day!");
             originalPos = transform.position;
             targetItem = spawnedItem;
             hitTargetPos = (transform.position + spawnedItem.transform.position) / 2;
@@ -86,7 +86,7 @@ public class Hero : MonoBehaviour {
 
     public void OpponentDied()
     {
-        Debug.Log("opponent died!");
+//        Debug.Log("opponent died!");
         targetItem = null;
         fightAgain = false;
         fighting = false;
