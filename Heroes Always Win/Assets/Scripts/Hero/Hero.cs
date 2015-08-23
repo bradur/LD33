@@ -18,19 +18,25 @@ public class Hero : MonoBehaviour {
     int moves = 0;
     public bool fightIsOver = true;
     Villain targetItem;
+    int endX;
+    int endY;
 
     public void Init(Map map, int startX, int startY)
     {
         this.map = map;
         this.startX = startX;
         this.startY = startY;
-        
     }
 
     public void SetEndSpot(int endX, int endY)
     {
+        this.endX = endX;
+        this.endY = endY;
+    }
+
+    public void StartMoving()
+    {
         movement.Init(map, startX, startY, endX, endY);
-        
     }
 
     public void ProcessNodeItem(MapNode heroNode, MapNode node)

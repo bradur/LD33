@@ -15,12 +15,13 @@ public class HeroMovement : MonoBehaviour {
     MapNode destination;
     List<MapNode> finalPath = new List<MapNode>();
     Vector3 targetPosition;
-    public float movementInterval = 0.5f;
+    float movementInterval = 0.01f;
     public float movementDuration = 0.25f;
     float movementTimer = 0f;
     Transform thisTransform;
     public Hero hero;
     MapNode currentTargetNode;
+    GameManager gameManager;
     bool moving;
     // Use this for initialization
     void Start () {
@@ -38,6 +39,7 @@ public class HeroMovement : MonoBehaviour {
         //SearchPath(currentNode);
         SearchPath(currentNode);
         thisTransform = GetComponent<Transform>();
+        gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
     }
 
 
@@ -57,25 +59,37 @@ public class HeroMovement : MonoBehaviour {
 
     IEnumerator Move()
     {
-        yield return new WaitForSeconds(movementInterval);
-
-        if (finalPath.Count > 0)
+        while (hero.fightIsOver != true)
         {
+            //Debug.Log("Hero target: [" + currentTargetNode.x + ", " + currentTargetNode.y + "]" + (currentTargetNode.item != null ? " + ITEM" : ""));
+            yield return 0;
+            //Debug.Log("Has item: " + currentTargetNode.item.itemName);
+        }
+
+        moving = true;
+    }
+
+    void NextNode()
+    {
+        if (finalPath.Count > 0){
+
             currentTargetNode = finalPath[finalPath.Count - 1];
             if (currentTargetNode.item != null)
             {
                 hero.ProcessNodeItem(currentNode, currentTargetNode);
+                moving = false;
+                StartCoroutine("Move");
             }
-            while (hero.fightIsOver != true)
+            if (thisTransform == null)
             {
-                //Debug.Log("Hero target: [" + currentTargetNode.x + ", " + currentTargetNode.y + "]" + (currentTargetNode.item != null ? " + ITEM" : ""));
-                yield return 0;
-                //Debug.Log("Has item: " + currentTargetNode.item.itemName);
+                thisTransform = GetComponent<Transform>();
             }
             targetPosition = new Vector3(-currentTargetNode.x + 0.5f, thisTransform.position.y, currentTargetNode.y - 0.5f);
             finalPath.RemoveAt(finalPath.Count - 1);
-            moving = true;
-            StartCoroutine("Move");
+        }
+        else
+        {
+            gameManager.LevelFinished();
         }
     }
 
@@ -86,11 +100,13 @@ public class HeroMovement : MonoBehaviour {
         {
             movementTimer += Time.fixedDeltaTime / movementDuration;
             thisTransform.position = Vector3.MoveTowards(thisTransform.position, targetPosition, movementTimer);
-            if(Vector3.Distance(thisTransform.position, targetPosition) < 0.1f){
-                thisTransform.position = targetPosition;
+            if(Vector3.Distance(thisTransform.position, targetPosition) < 0.05f){
+                //thisTransform.position = targetPosition;
                 currentNode = currentTargetNode;
                 movementTimer = 0;
-                moving = false;
+                //moving = false;
+                NextNode();
+
             }
         }
     }
@@ -112,6 +128,7 @@ public class HeroMovement : MonoBehaviour {
                 break;
             }
         }
+        NextNode();
         StartCoroutine("Move");
     }
 

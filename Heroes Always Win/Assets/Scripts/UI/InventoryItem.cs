@@ -15,6 +15,7 @@ public class InventoryItem : MonoBehaviour {
     public void Init(int itemCount)
     {
         this.itemCount = itemCount;
+        UpdateCount(0);
     }
 
     public void UpdateCount(int difference)

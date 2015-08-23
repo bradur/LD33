@@ -28,8 +28,13 @@ public class GameManager : MonoBehaviour {
     bool allowSpawn = false;
     bool anItemIsHovered = false;
     bool itemMoveIsInProcess = false;
+    public LevelTimer timer;
+    public SelectedItemPopup selectedItemPopup;
 
     public SpawnedItemHoverPopup itemPopup;
+
+    public VictoryMenu victoryMenu;
+    public GameOverMenu gameOverMenu;
 
     // Use this for initialization
     void Start () {
@@ -83,6 +88,7 @@ public class GameManager : MonoBehaviour {
             if (!itemMoveIsInProcess) { 
                 item.UpdateCount(-1);
             }
+            selectedItemPopup.Show(selectedItem.itemName, selectedItem.image.sprite);
             return true;
         }
         else if (selectedItem == item)
@@ -90,6 +96,40 @@ public class GameManager : MonoBehaviour {
             CancelItemSelection();
         }
         return false;
+    }
+
+    public void LevelFinished()
+    {
+        if (timer.enoughTime)
+        {
+            ShowVictoryMenu();
+        }
+        else
+        {
+            ShowGameOverMenu();
+        }
+        timer.StopTimer();
+    }
+
+    public void ShowVictoryMenu()
+    {
+        victoryMenu.gameObject.SetActive(true);
+    }
+
+    public void ShowGameOverMenu()
+    {
+        gameOverMenu.gameObject.SetActive(true);
+    }
+
+    public void StartLevel()
+    {
+        Hero hero = GameObject.FindGameObjectWithTag("Hero").GetComponent<Hero>();
+        if (hero == null)
+        {
+            Debug.Log("ERROR: no hero!");
+        }
+        hero.StartMoving();
+        timer.StartTimer();
     }
 
     // if user cancels use (esc key, click same item)
@@ -135,6 +175,7 @@ public class GameManager : MonoBehaviour {
         }
         selectedItem = null;
         followSprite.enabled = false;
+        selectedItemPopup.Hide();
     }
 
     // when player hovers over spawned item
@@ -242,6 +283,10 @@ public class GameManager : MonoBehaviour {
         if (Input.GetKeyUp(KeyCode.Escape))
         {
             CancelItemSelection();
+        }
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            StartLevel();
         }
     }
 }

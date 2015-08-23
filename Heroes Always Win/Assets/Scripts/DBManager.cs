@@ -22,7 +22,7 @@ public class DBManager : MonoBehaviour {
     {
         if (inventoryItems == null) { 
             inventoryItems = Resources.LoadAll<GameObject>("Items");
-            PlayerPrefs.SetInt("Villain", 100);
+            PlayerPrefs.SetInt("Villain", 6);
         }
     }
 

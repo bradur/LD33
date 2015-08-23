@@ -22,10 +22,23 @@ public class MapData: MonoBehaviour {
     private Material wallMaterial;
     public Text mapDebug;
     public MapSquare[] tiles;
+    public LevelTimer timer;
     int[] firstGids;
     int endX;
+    public int time;
     int endY;
     Hero hero;
+
+    public int IntParseFast(string value)
+    {
+        int result = 0;
+        for (int i = 0; i < value.Length; i += 1)
+        {
+            char letter = value[i];
+            result = 10 * result + (letter - 48);
+        }
+        return result;
+    }
 
     public void Init(TextAsset mapFile, Material tileSheet, Material wallMaterial)
     {
@@ -40,8 +53,6 @@ public class MapData: MonoBehaviour {
         }
         TmxMap map;
 
-
-
         map = new TmxMap(mapFile.text, "rnd");
         this.wallMaterial = wallMaterial;
 
@@ -54,6 +65,8 @@ public class MapData: MonoBehaviour {
         //tileSetName = map.Tilesets[0].Name;
         firstGids = new int[map.Tilesets.Count];
         mapTitle = map.Properties["Title"];
+        time = IntParseFast(map.Properties["Time"]);
+        timer.Init(time);
 
         tileMap = new Map(map.Width, map.Height);
 

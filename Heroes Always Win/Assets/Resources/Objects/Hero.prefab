@@ -15,7 +15,7 @@ GameObject:
   - 114: {fileID: 11475732}
   m_Layer: 0
   m_Name: Hero
-  m_TagString: Untagged
+  m_TagString: Hero
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -87,6 +87,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movement: {fileID: 11475732}
+  fightIsOver: 1
 --- !u!114 &11475732
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -98,8 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb2b4463322c25f4d8045032c99b292a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementInterval: .5
-  movementDuration: .25
+  movementDuration: 2
   hero: {fileID: 11421182}
 --- !u!1001 &100100000
 Prefab:
@@ -124,6 +124,18 @@ Prefab:
       propertyPath: hero
       value: 
       objectReference: {fileID: 11421182}
+    - target: {fileID: 0}
+      propertyPath: m_TagString
+      value: Hero
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: movementInterval
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: movementDuration
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 145846}
