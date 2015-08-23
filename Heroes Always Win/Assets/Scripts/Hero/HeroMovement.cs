@@ -20,6 +20,7 @@ public class HeroMovement : MonoBehaviour {
     float movementTimer = 0f;
     Transform thisTransform;
     public Hero hero;
+    MapNode currentTargetNode;
     bool moving;
     // Use this for initialization
     void Start () {
@@ -57,15 +58,21 @@ public class HeroMovement : MonoBehaviour {
     IEnumerator Move()
     {
         yield return new WaitForSeconds(movementInterval);
-        
+
         if (finalPath.Count > 0)
         {
-            MapNode targetNode = finalPath[finalPath.Count - 1];
-            if (targetNode.item != null) {
-                hero.ProcessNodeItem(targetNode);
-                yield return 0;
+            currentTargetNode = finalPath[finalPath.Count - 1];
+            if (currentTargetNode.item != null)
+            {
+                hero.ProcessNodeItem(currentTargetNode);
             }
-            targetPosition = new Vector3(-targetNode.x + 0.5f, thisTransform.position.y, targetNode.y - 0.5f);
+            while (currentTargetNode.item != null)
+            {
+                //Debug.Log("Hero target: [" + currentTargetNode.x + ", " + currentTargetNode.y + "]" + (currentTargetNode.item != null ? " + ITEM" : ""));
+                yield return 0;
+                //Debug.Log("Has item: " + currentTargetNode.item.itemName);
+            }
+            targetPosition = new Vector3(-currentTargetNode.x + 0.5f, thisTransform.position.y, currentTargetNode.y - 0.5f);
             //Debug.Log("From [" + targetNode.x + ", " + targetNode.y  + "] to " + targetPosition);
             finalPath.RemoveAt(finalPath.Count - 1);
             moving = true;

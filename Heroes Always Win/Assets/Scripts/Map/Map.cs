@@ -68,7 +68,7 @@ public class Map {
     }
 
     public MapNode GetNodeNormalized(float x, float y){
-        return GetNode((int)(-x - 0.5f),(int)(y + 0.5f));
+        return GetNode((int)(-x + 0.5f),(int)(y + 1f));
     }
 
     public MapNode GetNode(int x, int y)

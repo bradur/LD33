@@ -23,11 +23,9 @@ public class Hero : MonoBehaviour {
 
     public void ProcessNodeItem(MapNode node)
     {
-        SpawnedItemBase item = node.item;
-
+        node.item.InteractWithHero();
         // do smth
         // and finally unset item
-        item.Kill();
     }
 
     // Use this for initialization

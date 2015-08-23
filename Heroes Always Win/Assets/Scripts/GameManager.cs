@@ -188,8 +188,9 @@ public class GameManager : MonoBehaviour {
 
                     GameObject spawnedObject = (GameObject)Instantiate(selectedItem.prefab, new Vector3(newx, followSpriteTransform.position.y, newz), followSpriteTransform.rotation);
                     SpawnedItemBase spawnedItem = spawnedObject.GetComponent<SpawnedItemBase>();
-                    Debug.Log((int)(newx - 0.5f) +", "+ (int)(newz + 0.5f));
-                    spawnedItem.Init(this, selectedItem.itemName, tileMap.GetNodeNormalized(newx, newz));
+                    MapNode testNode = tileMap.GetNodeNormalized(newx, newz);
+                    spawnedItem.Init(this, selectedItem.itemName, testNode);
+                    //Debug.Log((int)(newx) + ", " + (int)(newz) + " -> " + testNode.x + ", " + testNode.y);
                     spawnedItem.transform.SetParent(followSpriteTransform.parent, true);
                     UseItem();
                     allowSpawn = false;

@@ -9,8 +9,10 @@ public class SpawnedItemBase : MonoBehaviour {
     public string itemName;
     public SpriteRenderer hoverSprite;
     public Color hoverColor;
+    public float dieDuration = 1f;
     Color originalColor;
     MapNode node;
+    public Hero hero;
     public bool allowDeselect = true;
 
     public void Init(GameManager manager, string name, MapNode node)
@@ -19,6 +21,7 @@ public class SpawnedItemBase : MonoBehaviour {
         this.itemName = name;
         originalColor = hoverSprite.color;
         node.item = this;
+        this.node = node;
     }
 
     // Use this for initialization
@@ -29,6 +32,17 @@ public class SpawnedItemBase : MonoBehaviour {
     // Update is called once per frame
     void Update () {
     
+    }
+
+    public virtual void InteractWithHero()
+    {
+        StartCoroutine("DieLater");
+    }
+
+    IEnumerator DieLater()
+    {
+        yield return new WaitForSeconds(dieDuration);
+        Kill();
     }
 
     public void Kill()
