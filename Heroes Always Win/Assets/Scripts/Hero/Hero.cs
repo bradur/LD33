@@ -21,6 +21,7 @@ public class Hero : MonoBehaviour {
     int endX;
     public float restAfterCombat = 1f;
     int endY;
+    GameManager manager;
 
     public void Init(Map map, int startX, int startY)
     {
@@ -93,7 +94,20 @@ public class Hero : MonoBehaviour {
 
     public void OpponentDied()
     {
+
+        if (manager == null)
+        {
+            manager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        }
 //        Debug.Log("opponent died!");
+        if (targetItem == null)
+        {
+            manager.pickup.Play();
+        }
+        else
+        {
+            manager.minionDie.Play();
+        }
         targetItem = null;
         fightAgain = false;
         fighting = false;

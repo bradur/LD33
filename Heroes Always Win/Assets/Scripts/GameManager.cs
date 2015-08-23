@@ -36,6 +36,8 @@ public class GameManager : MonoBehaviour {
     public VictoryMenu victoryMenu;
     public GameOverMenu gameOverMenu;
     public bool noSelection = true;
+    public AudioSource minionDie;
+    public AudioSource pickup;
 
     public GameObject messageContainer;
     public Text txtMessage;
