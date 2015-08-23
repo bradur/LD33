@@ -40,8 +40,4 @@ public class InventoryItem : MonoBehaviour {
     
     }
 
-    void OnMouseEnter()
-    {
-        Debug.Log("ya");
-    }
 }

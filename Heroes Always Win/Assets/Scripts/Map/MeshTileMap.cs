@@ -47,6 +47,7 @@ public class MeshTileMap : MonoBehaviour {
     public Color hoverColor;
     Color originalColor;
     public bool isHovering;
+    public bool selectionComeBack = false;
 
     void Start () {
         GenerateMesh();
@@ -107,11 +108,22 @@ public class MeshTileMap : MonoBehaviour {
         isHovering = false;
     }
 
+    void Select()
+    {
+        meshRenderer.material.color = hoverColor;
+        isHovering = true;
+    }
+
+    void Deselect()
+    {
+        meshRenderer.material.color = originalColor;
+        isHovering = false;
+    }
+
     void OnMouseEnter(){
         if (selectGround)
         {
-            meshRenderer.material.color = hoverColor;
-            isHovering = true;
+            Select();
         }
     }
 
@@ -119,8 +131,21 @@ public class MeshTileMap : MonoBehaviour {
     {
         if (selectGround)
         {
-            meshRenderer.material.color = originalColor;
-            isHovering = false;
+            Deselect();
+        }
+    }
+
+    public void SelectComeBack()
+    {
+        selectionComeBack = true;
+    }
+
+    void OnMouseOver()
+    {
+        if (selectionComeBack)
+        {
+            Select();
+            selectionComeBack = false;
         }
     }
 
