@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="48" height="27" tilewidth="128" tileheight="128" nextobjectid="13">
  <properties>
-  <property name="Gold" value="2"/>
-  <property name="Time" value="20000"/>
-  <property name="Title" value="The Hero Has Arrived"/>
-  <property name="Villain" value="3"/>
+  <property name="Gold" value="4"/>
+  <property name="Time" value="30000"/>
+  <property name="Title" value="The Hero Steals Everything"/>
+  <property name="Villain" value="4"/>
  </properties>
  <tileset firstgid="1" name="tile_sheet" tilewidth="128" tileheight="128" tilecount="64">
   <image source="../Resources/Images/tile_sheet.png" width="1024" height="1024"/>
@@ -20,7 +20,7 @@
    <property name="Type" value="Ground"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJztlTsKACAMQ9X7H9rVQWj9psY86NJBHyJJSuInijHRYfH37qMhfyzyx2L5I/PIk4vyP8dL/laPjvbs7fdm8e/tVv7PLeRvn3eS2ftQ/rvyTf5zMPjnZlb9EX0rf8FGBdTAAcw=
+   eJztkDEOACAIxJT/P9pFExdjFBSJbXILA1dICQBmSI12vtur3YW/rhd//DW9v/jLhZz0z11u3GJ9d/OO7B/5/694WDPqXp17gb8v+PuCPwBYUwBgAgIf
   </data>
  </layer>
  <layer name="Wall" width="48" height="27">
@@ -28,19 +28,19 @@
    <property name="Type" value="Wall"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJztl1EKACEIRLta979U/7uFo4zmsvMg6Cd9SCmNIVAmuLqCuMk/j/nY7+7Ml/ytfTfkfxfU/0Y/9fb2bjW3HOTPIzL3u/kzY1S/32z/bE71ss506f+7fPLH4kRA5hBrflW/V08++cfI8q/6v2T4M+Ix8v7N39OjWLD8xZsF8RErKw==
+   eJztlEEOgCAMBPka//+Udw41dBdbyUxiAh62g5EdA+Asc3my7zNzo30mR1krc5Us/PW5Shb++lwl6y/+a+85OvMtz+n/FdF3is7ZxT8L/rV08d/5/3fufbf+cVHV/y7wrwX/Wm7wd3QpQDcekEMuuQ==
   </data>
  </layer>
  <objectgroup name="Hero">
   <properties>
    <property name="Type" value="Hero"/>
   </properties>
-  <object id="6" gid="66" x="1536" y="3072" width="128" height="128"/>
+  <object id="6" gid="66" x="640" y="1792" width="128" height="128"/>
  </objectgroup>
  <objectgroup name="End">
   <properties>
    <property name="Type" value="End"/>
   </properties>
-  <object id="12" gid="67" x="4736" y="1408" width="128" height="128"/>
+  <object id="12" gid="67" x="5248" y="768" width="128" height="128"/>
  </objectgroup>
 </map>

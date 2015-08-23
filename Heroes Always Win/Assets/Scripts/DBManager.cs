@@ -5,9 +5,11 @@ using System.Collections.Generic;
 public class DBManager : MonoBehaviour {
 
     GameObject[] inventoryItems;
+    int currentLevel = 0;
 
     // Use this for initialization
     void Start () {
+
         LoadInventory();
     }
 
@@ -25,6 +27,28 @@ public class DBManager : MonoBehaviour {
             //PlayerPrefs.SetInt("Villain", 6);
             //PlayerPrefs.SetInt("Gold", 3);
         }
+    }
+
+    public int GetLevel()
+    {
+        if (PlayerPrefs.GetInt("Continue") > 0)
+        {
+            currentLevel = PlayerPrefs.GetInt("Level");
+//            Debug.Log(currentLevel);
+        }
+        return currentLevel;
+    }
+
+    public void NextLevel()
+    {
+        currentLevel += 1;
+        PlayerPrefs.SetInt("Continue", 1);
+        PlayerPrefs.SetInt("Level", currentLevel);
+    }
+
+    public void SaveLevel()
+    {
+        PlayerPrefs.SetInt("Level", currentLevel);
     }
 
     public void HideHelp()

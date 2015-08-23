@@ -9,6 +9,7 @@ TagManager:
   - DebugText
   - Hero
   - Gold
+  - MusicPlayer
   layers:
   - Default
   - TransparentFX

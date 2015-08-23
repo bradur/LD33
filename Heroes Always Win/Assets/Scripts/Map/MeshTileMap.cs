@@ -16,7 +16,7 @@ public class MeshTileMap : MonoBehaviour {
     //public int tileResolution;                      // resolution of a single texture in pixels
 
     public float tileUnit = 0.125f;
-    public TextAsset mapFile;
+    public List<TextAsset> maps;
 
     public Material wallMaterial;
     [HideInInspector]
@@ -50,7 +50,7 @@ public class MeshTileMap : MonoBehaviour {
     public bool selectionComeBack = false;
 
     void Start () {
-        GenerateMesh();
+        //GenerateMesh();
         meshRenderer = GetComponent<MeshRenderer>();
         originalColor = meshRenderer.material.color;
     }
@@ -149,26 +149,26 @@ public class MeshTileMap : MonoBehaviour {
         }
     }
 
-    public void SetMap(TextAsset map)
-    {
-        /*if (Debug.isDebugBuild)
-        {
-            this.mapFileName = "Assets/maps/" + mapName;
-        }*/
 
-        this.mapFile = map;
-        
-    }
-
-    public void GenerateMesh()
+    public void GenerateMesh(int mapNum)
     {
         //mesh = GetComponent<MeshFilter>().mesh;
         //PurgeData();
         GetTiles();
-        
-        LoadMap();
-        //BuildMesh();
-        UpdateMesh();
+
+        try
+        {
+            TextAsset mapf = maps[mapNum];
+
+            LoadMap(mapf);
+            //BuildMesh();
+            UpdateMesh();
+        }
+        catch (System.ArgumentOutOfRangeException)
+        {
+            GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().EndGame();
+            PlayerPrefs.SetInt("Level", 0);
+        }
     }
 
     /*private void PurgeData()
@@ -184,7 +184,7 @@ public class MeshTileMap : MonoBehaviour {
         }
     }*/
 
-    void LoadMap()
+    void LoadMap(TextAsset mapFile)
     {
 
         mapData.Init(mapFile, GetComponent<MeshRenderer>().sharedMaterial, wallMaterial);

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="48" height="27" tilewidth="128" tileheight="128" nextobjectid="13">
  <properties>
-  <property name="Gold" value="2"/>
-  <property name="Time" value="20000"/>
-  <property name="Title" value="The Hero Has Arrived"/>
-  <property name="Villain" value="3"/>
+  <property name="Gold" value="1"/>
+  <property name="Time" value="10000"/>
+  <property name="Title" value="Why Me, Oh Why?"/>
+  <property name="Villain" value="2"/>
  </properties>
  <tileset firstgid="1" name="tile_sheet" tilewidth="128" tileheight="128" tilecount="64">
   <image source="../Resources/Images/tile_sheet.png" width="1024" height="1024"/>
@@ -20,7 +20,7 @@
    <property name="Type" value="Ground"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJztlTsKACAMQ9X7H9rVQWj9psY86NJBHyJJSuInijHRYfH37qMhfyzyx2L5I/PIk4vyP8dL/laPjvbs7fdm8e/tVv7PLeRvn3eS2ftQ/rvyTf5zMPjnZlb9EX0rf8FGBdTAAcw=
+   eJzt1DEKACAMBMGY/z9a7FIEYqPxZAeu3+rMkPEwRfT3U25f6O9F/z2+sZdVffSfRX+vH/qV/yej2BzR30u5f4Qpoh9AZQK3kABm
   </data>
  </layer>
  <layer name="Wall" width="48" height="27">
@@ -28,19 +28,19 @@
    <property name="Type" value="Wall"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJztl1EKACEIRLta979U/7uFo4zmsvMg6Cd9SCmNIVAmuLqCuMk/j/nY7+7Ml/ytfTfkfxfU/0Y/9fb2bjW3HOTPIzL3u/kzY1S/32z/bE71ss506f+7fPLH4kRA5hBrflW/V08++cfI8q/6v2T4M+Ix8v7N39OjWLD8xZsF8RErKw==
+   eJzt10EKwCAMRFGvlvtfyr1E4yLGmTAPSivt4oOhtGPks2CNTv1/deg355qJLWc26q9jm8O7h+i2C71/tw/osxT1qf+tTv3M85/1XDX2978HfWYizP3s388d/l9Oa3TqF6kxAaWIFlk=
   </data>
  </layer>
  <objectgroup name="Hero">
   <properties>
    <property name="Type" value="Hero"/>
   </properties>
-  <object id="6" gid="66" x="1536" y="3072" width="128" height="128"/>
+  <object id="6" gid="66" x="2944" y="2816" width="128" height="128"/>
  </objectgroup>
  <objectgroup name="End">
   <properties>
    <property name="Type" value="End"/>
   </properties>
-  <object id="12" gid="67" x="4736" y="1408" width="128" height="128"/>
+  <object id="12" gid="67" x="2944" y="384" width="128" height="128"/>
  </objectgroup>
 </map>

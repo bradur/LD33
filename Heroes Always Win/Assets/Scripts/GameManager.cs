@@ -37,10 +37,16 @@ public class GameManager : MonoBehaviour {
     public GameOverMenu gameOverMenu;
     public bool noSelection = true;
 
+    public GameObject messageContainer;
+    public Text txtMessage;
+
+    public GameObject endGameMenu;
+
     // Use this for initialization
     void Start () {
         //meshTileMap.SetMap(tmxMap);
         //meshTileMap.GenerateMesh();
+        meshTileMap.GenerateMesh(dbManager.GetLevel());
         if (dbManager.HelpShouldBeShown())
         {
             helpPopup.SetActive(true);
@@ -74,6 +80,13 @@ public class GameManager : MonoBehaviour {
 
             inventoryItems[i] = newInventoryItem.GetComponent<InventoryItem>();
         }
+    }
+
+    public void EndGame()
+    {
+        //
+        endGameMenu.SetActive(true);
+       // Debug.Log("Game end!");
     }
 
     public void HideHelp(){
@@ -139,15 +152,55 @@ public class GameManager : MonoBehaviour {
         gameOverMenu.gameObject.SetActive(true);
     }
 
+    public void NextLevel()
+    {
+        dbManager.NextLevel();
+        Application.LoadLevel(1);
+    }
+
+    public void RestartLevel()
+    {
+        Application.LoadLevel(1);
+    }
+
+    public void OpenMainMenu()
+    {
+        Application.LoadLevel(0);
+    }
+
+    public void DisplayMessage(string message)
+    {
+        messageContainer.SetActive(true);
+        txtMessage.text = message;
+    }
+
+    public void HideMessage()
+    {
+        messageContainer.SetActive(false);
+    }
+
     public void StartLevel()
     {
-        Hero hero = GameObject.FindGameObjectWithTag("Hero").GetComponent<Hero>();
-        if (hero == null)
-        {
-            Debug.Log("ERROR: no hero!");
+        bool allowStart = true;
+        foreach(InventoryItem item in inventoryItems){
+            if (item.itemCount != 0)
+            {
+                allowStart = false;
+            }
         }
-        hero.StartMoving();
-        timer.StartTimer();
+        if (allowStart) { 
+            Hero hero = GameObject.FindGameObjectWithTag("Hero").GetComponent<Hero>();
+            if (hero == null)
+            {
+                Debug.Log("ERROR: no hero!");
+            }
+            hero.StartMoving();
+            timer.StartTimer();
+        }
+        else
+        {
+            DisplayMessage("Place all the items first!");
+        }
     }
 
     // if user cancels use (esc key, click same item)

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="48" height="27" tilewidth="128" tileheight="128" nextobjectid="13">
  <properties>
-  <property name="Gold" value="2"/>
-  <property name="Time" value="20000"/>
-  <property name="Title" value="The Hero Has Arrived"/>
-  <property name="Villain" value="3"/>
+  <property name="Gold" value="5"/>
+  <property name="Time" value="30000"/>
+  <property name="Title" value="Oh No! Don't kill me, Mr. Hero!"/>
+  <property name="Villain" value="6"/>
  </properties>
  <tileset firstgid="1" name="tile_sheet" tilewidth="128" tileheight="128" tilecount="64">
   <image source="../Resources/Images/tile_sheet.png" width="1024" height="1024"/>
@@ -20,7 +20,7 @@
    <property name="Type" value="Ground"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJztlTsKACAMQ9X7H9rVQWj9psY86NJBHyJJSuInijHRYfH37qMhfyzyx2L5I/PIk4vyP8dL/laPjvbs7fdm8e/tVv7PLeRvn3eS2ftQ/rvyTf5zMPjnZlb9EX0rf8FGBdTAAcw=
+   eJztlDEOACAIxNT/P9rVTQMcqGkTxjs7IK0BgIrhmBvAP9bDmjvJ4r/vtuay/D376t3niL/Ql9ll8c/xr7p/ii7lG8puq7/HIdu/8nZZed1fCf61vO4PAH8zAf0nAfQ=
   </data>
  </layer>
  <layer name="Wall" width="48" height="27">
@@ -28,19 +28,19 @@
    <property name="Type" value="Wall"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJztl1EKACEIRLta979U/7uFo4zmsvMg6Cd9SCmNIVAmuLqCuMk/j/nY7+7Ml/ytfTfkfxfU/0Y/9fb2bjW3HOTPIzL3u/kzY1S/32z/bE71ss506f+7fPLH4kRA5hBrflW/V08++cfI8q/6v2T4M+Ix8v7N39OjWLD8xZsF8RErKw==
+   eJztlW0KgCAQRL1a979U9EOCoPZjdnSDeSAUrevTdB1DiJ4cBW0n6Pjyv/Nk/mkn/0zOZ2x0r3f098ZGx5rx1tog9SPj36UWXUT9I9+tvhW1Wf5ricwZOTtfOazz6+2P3h3o/rGe5zs6P2T93/D6M6k8vxU5Mw6MnMzG9mci/7383V8IYXMCXWEvOw==
   </data>
  </layer>
  <objectgroup name="Hero">
   <properties>
    <property name="Type" value="Hero"/>
   </properties>
-  <object id="6" gid="66" x="1536" y="3072" width="128" height="128"/>
+  <object id="6" gid="66" x="640" y="1664" width="128" height="128"/>
  </objectgroup>
  <objectgroup name="End">
   <properties>
    <property name="Type" value="End"/>
   </properties>
-  <object id="12" gid="67" x="4736" y="1408" width="128" height="128"/>
+  <object id="12" gid="67" x="5120" y="2560" width="128" height="128"/>
  </objectgroup>
 </map>

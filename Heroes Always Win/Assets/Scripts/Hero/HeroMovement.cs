@@ -33,7 +33,7 @@ public class HeroMovement : MonoBehaviour {
     public void Init(Map map, int x, int y, int endX, int endY)
     {
         this.map = map;
-        Debug.Log("Hero start at: ["+ x + ", " + y + "]");
+//        Debug.Log("Hero start at: ["+ x + ", " + y + "]");
         currentGlobalNode = map.GetNode(x, y);
         //debugText = GameObject.FindGameObjectWithTag("DebugText").GetComponent<Text>();
         //debugText.text = map.NeighborsToString(currentNode);
@@ -43,23 +43,25 @@ public class HeroMovement : MonoBehaviour {
         //SearchPath(currentNode);
         GameObject[] treasures = GameObject.FindGameObjectsWithTag("Gold");
 
-        List<GameObject> sortedTransforms = new List<GameObject>();
-        for (int i = 0; i < treasures.Length; i += 1)
-        {
-            sortedTransforms.Add(treasures[i]);
-        }
-        sortedTransforms.Sort(delegate(GameObject c1, GameObject c2){
-            return Vector3.Distance(this.transform.position, c1.transform.position).CompareTo(
-                    Vector3.Distance(this.transform.position, c2.transform.position)
-            );
-        });
-        for (int i = sortedTransforms.Count - 1; i > -1; i -= 1)
-        {
-            GameObject gold = sortedTransforms[i];
-            //Debug.Log(Vector3.Distance(this.transform.position, gold.transform.position));
-            MapNode node = map.GetNodeNormalized(gold.transform.position.x, gold.transform.position.z);
-            //Debug.Log("NODE: ["+node.x +","+ node.y + "]");
-            destinations.Add(node);
+        if (treasures.Length > 0) {
+            List<GameObject> sortedTransforms = new List<GameObject>();
+            for (int i = 0; i < treasures.Length; i += 1)
+            {
+                sortedTransforms.Add(treasures[i]);
+            }
+            sortedTransforms.Sort(delegate(GameObject c1, GameObject c2){
+                return Vector3.Distance(this.transform.position, c1.transform.position).CompareTo(
+                        Vector3.Distance(this.transform.position, c2.transform.position)
+                );
+            });
+            for (int i = sortedTransforms.Count - 1; i > -1; i -= 1)
+            {
+                GameObject gold = sortedTransforms[i];
+                //Debug.Log(Vector3.Distance(this.transform.position, gold.transform.position));
+                MapNode node = map.GetNodeNormalized(gold.transform.position.x, gold.transform.position.z);
+                //Debug.Log("NODE: ["+node.x +","+ node.y + "]");
+                destinations.Add(node);
+            }
         }
         destination = destinations[destinations.Count - 1];
         destinations.RemoveAt(destinations.Count - 1);

@@ -20,7 +20,7 @@
    <property name="Type" value="Ground"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJzt1EsOABAMAFHc/9C2FqJNfVrMJDYWvIg0JfqpIqzoveLX7kcLv2/4fZP8nvNIMxfx7+sm/8iam6V1nX7vV/y9vZn/cyr88nk7s97n5V813/Dbwj8+B7/tXvq7CrNgAc8=
+   eJztlTsKACAMQ9X7H9rVQWj9psY86NJBHyJJSuInijHRYfH37qMhfyzyx2L5I/PIk4vyP8dL/laPjvbs7fdm8e/tVv7PLeRvn3eS2ftQ/rvyTf5zMPjnZlb9EX0rf8FGBdTAAcw=
   </data>
  </layer>
  <layer name="Wall" width="48" height="27">
