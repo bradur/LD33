@@ -19,6 +19,7 @@ public class HeroMovement : MonoBehaviour {
     public float movementDuration = 0.25f;
     float movementTimer = 0f;
     Transform thisTransform;
+    public Hero hero;
     bool moving;
     // Use this for initialization
     void Start () {
@@ -56,10 +57,14 @@ public class HeroMovement : MonoBehaviour {
     IEnumerator Move()
     {
         yield return new WaitForSeconds(movementInterval);
-
+        
         if (finalPath.Count > 0)
         {
             MapNode targetNode = finalPath[finalPath.Count - 1];
+            if (targetNode.item != null) {
+                hero.ProcessNodeItem(targetNode);
+                yield return 0;
+            }
             targetPosition = new Vector3(-targetNode.x + 0.5f, thisTransform.position.y, targetNode.y - 0.5f);
             //Debug.Log("From [" + targetNode.x + ", " + targetNode.y  + "] to " + targetPosition);
             finalPath.RemoveAt(finalPath.Count - 1);

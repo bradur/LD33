@@ -16,6 +16,8 @@ public class MapNode
     MapNode parentNode = null;
     public string list = ".";
 
+    public SpawnedItemBase item;
+
     public MapNode(int x, int y, bool isWalkable)
     {
         this.x = x;
@@ -63,6 +65,10 @@ public class Map {
         {
             nodes[i] = new MapNode[width];
         }
+    }
+
+    public MapNode GetNodeNormalized(float x, float y){
+        return GetNode((int)(-x - 0.5f),(int)(y + 0.5f));
     }
 
     public MapNode GetNode(int x, int y)

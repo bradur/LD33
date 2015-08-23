@@ -10,13 +10,15 @@ public class SpawnedItemBase : MonoBehaviour {
     public SpriteRenderer hoverSprite;
     public Color hoverColor;
     Color originalColor;
+    MapNode node;
     public bool allowDeselect = true;
 
-    public void Init(GameManager manager, string name)
+    public void Init(GameManager manager, string name, MapNode node)
     {
         this.gameManager = manager;
         this.itemName = name;
         originalColor = hoverSprite.color;
+        node.item = this;
     }
 
     // Use this for initialization
@@ -31,6 +33,7 @@ public class SpawnedItemBase : MonoBehaviour {
 
     public void Kill()
     {
+        node.item = null;
         Destroy(gameObject);
     }
 

@@ -20,7 +20,16 @@ public class Hero : MonoBehaviour {
     {
         movement.Init(map, startX, startY, endX, endY);
     }
-    
+
+    public void ProcessNodeItem(MapNode node)
+    {
+        SpawnedItemBase item = node.item;
+
+        // do smth
+        // and finally unset item
+        item.Kill();
+    }
+
     // Use this for initialization
     void Start () {
     
