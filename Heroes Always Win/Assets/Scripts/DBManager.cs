@@ -26,6 +26,16 @@ public class DBManager : MonoBehaviour {
         }
     }
 
+    public void HideHelp()
+    {
+        PlayerPrefs.SetInt("HideHelp", 1);
+    }
+
+    public bool HelpShouldBeShown()
+    {
+        return (PlayerPrefs.GetInt("HideHelp") == 1 ? false : true);
+    }
+
     public void SetInventory(List<InventoryItem> items)
     {
         foreach (InventoryItem item in items)

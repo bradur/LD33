@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour {
     Map tileMap;
     Vector3 mouseToWorld;
     public float inputZ = 15f;
+    public GameObject helpPopup;
+    public GameObject showHelpButton;
     bool allowSpawn = false;
     bool anItemIsHovered = false;
     bool itemMoveIsInProcess = false;
@@ -33,6 +35,14 @@ public class GameManager : MonoBehaviour {
     void Start () {
         //meshTileMap.SetMap(tmxMap);
         //meshTileMap.GenerateMesh();
+        if (dbManager.HelpShouldBeShown())
+        {
+            helpPopup.SetActive(true);
+        }
+        else
+        {
+            showHelpButton.SetActive(true);
+        }
         inventoryItems = dbManager.GetInventory();
         for (int i = 0; i < inventoryItems.Count; i += 1)
         {
@@ -43,6 +53,10 @@ public class GameManager : MonoBehaviour {
             inventoryItems[i] = newInventoryItem.GetComponent<InventoryItem>();
 
         }
+    }
+
+    public void HideHelp(){
+        dbManager.HideHelp();
     }
 
     public bool SelectInventoryItem(InventoryItem item)
