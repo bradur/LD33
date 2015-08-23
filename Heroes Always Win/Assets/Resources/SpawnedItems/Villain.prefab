@@ -10,7 +10,6 @@ GameObject:
   - 4: {fileID: 473126}
   - 212: {fileID: 21262942}
   - 114: {fileID: 11438270}
-  - 54: {fileID: 5446396}
   - 65: {fileID: 6506690}
   m_Layer: 0
   m_Name: Villain
@@ -54,27 +53,12 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 135256}
   m_LocalRotation: {x: -1.15202326e-07, y: -.707106829, z: .707106709, w: -1.15202312e-07}
-  m_LocalPosition: {x: -22.8899994, y: .529999971, z: 12.9499998}
+  m_LocalPosition: {x: -22.8899994, y: 1, z: 12.9499998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 433824}
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!54 &5446396
-Rigidbody:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 135256}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: .0500000007
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 122
-  m_CollisionDetection: 0
 --- !u!65 &6506690
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -102,6 +86,10 @@ MonoBehaviour:
   itemName: 
   hoverSprite: {fileID: 21286372}
   hoverColor: {r: .45588237, g: .729817331, b: 1, a: 1}
+  dieDuration: 1
+  hero: {fileID: 0}
+  allowDeselect: 1
+  moveAgain: 0
 --- !u!212 &21262942
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -163,7 +151,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 0}
       propertyPath: m_Constraints
-      value: 122
+      value: 126
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_LocalPosition.y
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

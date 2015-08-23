@@ -11,7 +11,7 @@ public class SpawnedItemBase : MonoBehaviour {
     public Color hoverColor;
     public float dieDuration = 1f;
     Color originalColor;
-    MapNode node;
+    public MapNode node;
     public Hero hero;
     public bool allowDeselect = true;
 
@@ -34,7 +34,7 @@ public class SpawnedItemBase : MonoBehaviour {
     
     }
 
-    public virtual void InteractWithHero()
+    public virtual void InteractWithHero(Hero hero)
     {
         StartCoroutine("DieLater");
     }
@@ -42,6 +42,7 @@ public class SpawnedItemBase : MonoBehaviour {
     IEnumerator DieLater()
     {
         yield return new WaitForSeconds(dieDuration);
+        hero.OpponentDied();
         Kill();
     }
 

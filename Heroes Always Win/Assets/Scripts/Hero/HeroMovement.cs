@@ -11,7 +11,7 @@ public class HeroMovement : MonoBehaviour {
 
     List<MapNode> openNodes = new List<MapNode>();
     List<MapNode> closedNodes = new List<MapNode>();
-    //MapNode currentNode;
+    MapNode currentNode;
     MapNode destination;
     List<MapNode> finalPath = new List<MapNode>();
     Vector3 targetPosition;
@@ -64,16 +64,15 @@ public class HeroMovement : MonoBehaviour {
             currentTargetNode = finalPath[finalPath.Count - 1];
             if (currentTargetNode.item != null)
             {
-                hero.ProcessNodeItem(currentTargetNode);
+                hero.ProcessNodeItem(currentNode, currentTargetNode);
             }
-            while (currentTargetNode.item != null)
+            while (hero.fightIsOver != true)
             {
                 //Debug.Log("Hero target: [" + currentTargetNode.x + ", " + currentTargetNode.y + "]" + (currentTargetNode.item != null ? " + ITEM" : ""));
                 yield return 0;
                 //Debug.Log("Has item: " + currentTargetNode.item.itemName);
             }
             targetPosition = new Vector3(-currentTargetNode.x + 0.5f, thisTransform.position.y, currentTargetNode.y - 0.5f);
-            //Debug.Log("From [" + targetNode.x + ", " + targetNode.y  + "] to " + targetPosition);
             finalPath.RemoveAt(finalPath.Count - 1);
             moving = true;
             StartCoroutine("Move");
@@ -89,6 +88,7 @@ public class HeroMovement : MonoBehaviour {
             thisTransform.position = Vector3.MoveTowards(thisTransform.position, targetPosition, movementTimer);
             if(Vector3.Distance(thisTransform.position, targetPosition) < 0.1f){
                 thisTransform.position = targetPosition;
+                currentNode = currentTargetNode;
                 movementTimer = 0;
                 moving = false;
             }
