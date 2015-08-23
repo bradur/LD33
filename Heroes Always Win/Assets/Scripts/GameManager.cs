@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour {
 
     public DBManager dbManager;
     List<InventoryItem> inventoryItems;
-    InventoryItem selectedItem;
+    public InventoryItem selectedItem;
     public SpriteRenderer followSprite;
     Transform followSpriteTransform;
     public RectTransform inventoryContents;
@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour {
 
     public VictoryMenu victoryMenu;
     public GameOverMenu gameOverMenu;
+    public bool noSelection = true;
 
     // Use this for initialization
     void Start () {
@@ -48,15 +49,30 @@ public class GameManager : MonoBehaviour {
         {
             showHelpButton.SetActive(true);
         }
-        inventoryItems = dbManager.GetInventory();
+
+    }
+
+    public void MapGenerationCallBack(MapData mapData)
+    {
+        inventoryItems = dbManager.GetInventory(mapData.villains, mapData.gold);
         for (int i = 0; i < inventoryItems.Count; i += 1)
         {
             InventoryItem item = inventoryItems[i];
             item.gameManager = this;
             GameObject newInventoryItem = Instantiate(item).gameObject;
-            newInventoryItem.transform.SetParent(inventoryContents, false);
-            inventoryItems[i] = newInventoryItem.GetComponent<InventoryItem>();
 
+            newInventoryItem.transform.SetParent(inventoryContents, false);
+            RectTransform rectTransform = newInventoryItem.GetComponent<RectTransform>();
+            float x = rectTransform.anchoredPosition.x + rectTransform.sizeDelta.x * i + 20f * i;
+            float y = rectTransform.anchoredPosition.y;
+            if (i > 1)
+            {
+                y -= rectTransform.sizeDelta.y * i + 20f * i;
+            }
+
+            rectTransform.anchoredPosition = new Vector2(x, y);
+
+            inventoryItems[i] = newInventoryItem.GetComponent<InventoryItem>();
         }
     }
 
@@ -71,6 +87,7 @@ public class GameManager : MonoBehaviour {
         {
             tileMap = meshTileMap.mapData.tileMap;
         }
+//        Debug.Log(item.itemCount);
         if (selectedItem == null)
         {
             selectedItem = item;
@@ -89,6 +106,7 @@ public class GameManager : MonoBehaviour {
                 item.UpdateCount(-1);
             }
             selectedItemPopup.Show(selectedItem.itemName, selectedItem.image.sprite);
+            noSelection = false;
             return true;
         }
         else if (selectedItem == item)
@@ -176,6 +194,7 @@ public class GameManager : MonoBehaviour {
         selectedItem = null;
         followSprite.enabled = false;
         selectedItemPopup.Hide();
+        noSelection = true;
     }
 
     // when player hovers over spawned item
@@ -191,6 +210,7 @@ public class GameManager : MonoBehaviour {
 
     public void HoverOverSpawnedItemEnd()
     {
+        //Debug.Log("End hover");
         anItemIsHovered = false;
     }
 
@@ -233,9 +253,11 @@ public class GameManager : MonoBehaviour {
             mouseToWorld = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, inputZ));
 //            Debug.Log(Input.mousePosition + " -> " + mouseToWorld);
             followSpriteTransform.position = new Vector3(mouseToWorld.x, followSpriteTransform.position.y, mouseToWorld.z);
-            
+
+
             if (Input.GetMouseButtonUp(0) && !anItemIsHovered)
             {
+                
                 if (selectedItem.placementArea == PlacementArea.Villain)
                 {
                     // if mouse is on top of placement area (this time meshTileMap)
@@ -244,6 +266,7 @@ public class GameManager : MonoBehaviour {
                         allowSpawn = true;
                     }
                 }
+                
                 if (allowSpawn)
                 {
                     float x = followSpriteTransform.position.x;

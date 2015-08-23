@@ -11,10 +11,12 @@ public class InventoryItem : MonoBehaviour {
     public GameObject prefab;
     public GameManager gameManager;
     public PlacementArea placementArea;
+    public Text txtTitle;
 
     public void Init(int itemCount)
     {
         this.itemCount = itemCount;
+        txtTitle.text = this.itemName;
         UpdateCount(0);
     }
 
@@ -24,9 +26,17 @@ public class InventoryItem : MonoBehaviour {
         count.text = itemCount.ToString();
     }
 
-    public void Select()
-    {
-        gameManager.SelectInventoryItem(this);
+    public void Select(){
+        if (gameManager.selectedItem == this) {
+            gameManager.CancelItemSelection();
+        }
+        else if (itemCount < 1)
+        {
+            // play sound?
+        }
+        else {
+            gameManager.SelectInventoryItem(this);
+        }
         //{
             //UpdateCount(-1);
         //};

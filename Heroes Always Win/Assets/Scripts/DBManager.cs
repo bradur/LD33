@@ -22,7 +22,8 @@ public class DBManager : MonoBehaviour {
     {
         if (inventoryItems == null) { 
             inventoryItems = Resources.LoadAll<GameObject>("Items");
-            PlayerPrefs.SetInt("Villain", 6);
+            //PlayerPrefs.SetInt("Villain", 6);
+            //PlayerPrefs.SetInt("Gold", 3);
         }
     }
 
@@ -36,15 +37,15 @@ public class DBManager : MonoBehaviour {
         return (PlayerPrefs.GetInt("HideHelp") == 1 ? false : true);
     }
 
-    public void SetInventory(List<InventoryItem> items)
+    /*public void SetInventory(List<InventoryItem> items)
     {
         foreach (InventoryItem item in items)
         {
             PlayerPrefs.SetInt(item.itemName, item.itemCount);
         }
-    }
+    }*/
 
-    public List<InventoryItem> GetInventory()
+    public List<InventoryItem> GetInventory(int villains, int gold)
     {
         List<InventoryItem> currentItems = new List<InventoryItem>();
         LoadInventory();
@@ -52,7 +53,16 @@ public class DBManager : MonoBehaviour {
         {
 
             InventoryItem item = inventoryItems[i].GetComponent<InventoryItem>();
-            int itemCount = PlayerPrefs.GetInt(item.itemName);
+            int itemCount = 0;
+            if (item.itemName == "Minion")
+            {
+                itemCount = villains;
+            }
+            else
+            {
+                itemCount = gold;
+            }
+            //int itemCount = PlayerPrefs.GetInt(item.itemName);
             if (itemCount > 0)
             {
                 item.Init(itemCount);

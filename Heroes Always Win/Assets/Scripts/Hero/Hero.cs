@@ -19,6 +19,7 @@ public class Hero : MonoBehaviour {
     public bool fightIsOver = true;
     Villain targetItem;
     int endX;
+    public float restAfterCombat = 1f;
     int endY;
 
     public void Init(Map map, int startX, int startY)
@@ -86,7 +87,7 @@ public class Hero : MonoBehaviour {
 
     IEnumerator RestAfterCombat()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(restAfterCombat);
         fightIsOver = true;
     }
 

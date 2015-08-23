@@ -17,6 +17,7 @@ public class SpawnedItemHoverPopup : MonoBehaviour {
         itemOnGround = item;
         transform.position = Camera.main.WorldToScreenPoint(item.transform.position);
         animator.SetTrigger("Show");
+        gameManager.noSelection = false;
     }
 
     public void DeActivate()
@@ -29,6 +30,7 @@ public class SpawnedItemHoverPopup : MonoBehaviour {
             itemOnGround.allowDeselect = true;
             itemOnGround.Deselect();
         }
+        gameManager.noSelection = true;
     }
 
     public void RemoveItem()

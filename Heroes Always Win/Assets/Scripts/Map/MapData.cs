@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Xml.Linq;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class MapData: MonoBehaviour {
 
@@ -27,7 +28,10 @@ public class MapData: MonoBehaviour {
     int endX;
     public int time;
     int endY;
+    public int villains;
+    public int gold;
     Hero hero;
+    public GameManager manager;
 
     public int IntParseFast(string value)
     {
@@ -66,6 +70,8 @@ public class MapData: MonoBehaviour {
         firstGids = new int[map.Tilesets.Count];
         mapTitle = map.Properties["Title"];
         time = IntParseFast(map.Properties["Time"]);
+        villains = IntParseFast(map.Properties["Villain"]);
+        gold = IntParseFast(map.Properties["Gold"]);
         timer.Init(time);
 
         tileMap = new Map(map.Width, map.Height);
@@ -86,7 +92,7 @@ public class MapData: MonoBehaviour {
         {
             DestroyObject(child.gameObject);
         }
-
+        manager.MapGenerationCallBack(this);
     }
 
     public void DestroyObject(GameObject objectToDestroy)

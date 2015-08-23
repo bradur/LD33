@@ -46,7 +46,7 @@ GameObject:
   - 114: {fileID: 11457800}
   - 114: {fileID: 11411614}
   m_Layer: 5
-  m_Name: VillainItem
+  m_Name: GoldItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -243,7 +243,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Sprite: {fileID: 21300000, guid: 3214ea6d3c42f4045914771760727ed9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b6231da5842355f48883f9c5a4e462ed, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -263,10 +263,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   count: {fileID: 11458970}
-  itemName: Minion
+  itemName: Gold
   image: {fileID: 11452178}
-  itemCount: 100
-  prefab: {fileID: 135256, guid: f1a2f015c4923d84d8b46fe9ef2a1435, type: 2}
+  itemCount: 2
+  prefab: {fileID: 135256, guid: f52697858bac65f4f8d1d4bf0e87f00c, type: 2}
   gameManager: {fileID: 0}
   placementArea: 1
   txtTitle: {fileID: 11402776}
@@ -295,7 +295,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 2
+  m_Text: 3
 --- !u!114 &11471076
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -650,8 +650,25 @@ Prefab:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 0}
+      propertyPath: prefab
+      value: 
+      objectReference: {fileID: 135256, guid: f52697858bac65f4f8d1d4bf0e87f00c, type: 2}
+    - target: {fileID: 0}
       propertyPath: itemName
-      value: Minion
+      value: Gold
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: b6231da5842355f48883f9c5a4e462ed,
+        type: 3}
+    - target: {fileID: 0}
+      propertyPath: m_AnchoredPosition.x
+      value: -49.7999992
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_AnchoredPosition.y
+      value: 33.2000008
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

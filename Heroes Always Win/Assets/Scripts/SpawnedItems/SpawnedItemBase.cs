@@ -36,6 +36,7 @@ public class SpawnedItemBase : MonoBehaviour {
 
     public virtual void InteractWithHero(Hero hero)
     {
+        this.hero = hero;
         StartCoroutine("DieLater");
     }
 
@@ -49,6 +50,8 @@ public class SpawnedItemBase : MonoBehaviour {
     public void Kill()
     {
         node.item = null;
+        allowDeselect = true;
+        Deselect();
         Destroy(gameObject);
     }
 
@@ -67,19 +70,54 @@ public class SpawnedItemBase : MonoBehaviour {
         }
     }
 
-    void OnMouseUpAsButton()
+    /*void OnMouseUpAsButton()
     {
-        gameManager.ClickSpawnedItem(this);
-        allowDeselect = false;
+        if (gameManager.noSelection){
+
+
+
+        }
+    }*/
+
+    void OnMouseOver()
+    {
+        if (gameManager.noSelection)
+        {
+            if (Input.GetMouseButtonUp(0))
+            {
+
+                gameManager.ClickSpawnedItem(this);
+                allowDeselect = false;
+            }
+            else if (Input.GetMouseButtonUp(1))
+            {
+                if (gameManager.RemoveItemThroughHoverPopup(itemName, this))
+                {
+                    Kill();
+                }
+            }
+            else if (Input.GetMouseButtonUp(2))
+            {
+                if (gameManager.SelectInventoryItemThroughHoverPopup(itemName, this))
+                {
+                    Kill();
+                }
+            }
+        }
     }
 
     void OnMouseEnter()
     {
-        Select();
+        if (gameManager.noSelection)
+        {
+            Select();
+        }
     }
 
     void OnMouseExit()
     {
-        Deselect();
+        if (gameManager.noSelection){
+            Deselect();
+        }
     }
 }

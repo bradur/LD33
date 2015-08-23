@@ -9,11 +9,11 @@ GameObject:
   m_Component:
   - 4: {fileID: 473126}
   - 212: {fileID: 21262942}
-  - 114: {fileID: 11438270}
+  - 114: {fileID: 11449290}
   - 65: {fileID: 6506690}
   m_Layer: 0
-  m_Name: Villain
-  m_TagString: Untagged
+  m_Name: Gold
+  m_TagString: Gold
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -71,7 +71,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: .999999881, z: .200000033}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &11438270
+--- !u!114 &11449290
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -79,17 +79,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 135256}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b220e3bf416d81b4e8e8cd57d8aa3ad9, type: 3}
+  m_Script: {fileID: 11500000, guid: 81b2a5f37a8b75e429f0faf9da32f5e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 0}
   itemName: 
   hoverSprite: {fileID: 21286372}
-  hoverColor: {r: .45588237, g: .729817331, b: 1, a: 1}
+  hoverColor: {r: .454901963, g: .729411781, b: 1, a: 1}
   dieDuration: .150000006
   hero: {fileID: 0}
   allowDeselect: 1
-  moveAgain: 0
 --- !u!212 &21262942
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -114,7 +113,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 3214ea6d3c42f4045914771760727ed9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b6231da5842355f48883f9c5a4e462ed, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!212 &21286372
 SpriteRenderer:
@@ -156,6 +155,35 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_LocalPosition.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: hoverSprite
+      value: 
+      objectReference: {fileID: 21286372}
+    - target: {fileID: 0}
+      propertyPath: hoverColor.r
+      value: .454901963
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: hoverColor.g
+      value: .729411781
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: hoverColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: hoverColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: b6231da5842355f48883f9c5a4e462ed,
+        type: 3}
+    - target: {fileID: 0}
+      propertyPath: m_TagString
+      value: Gold
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: dieDuration

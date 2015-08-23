@@ -8,6 +8,7 @@ TagManager:
   - MapGenerator
   - DebugText
   - Hero
+  - Gold
   layers:
   - Default
   - TransparentFX

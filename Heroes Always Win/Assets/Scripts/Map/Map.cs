@@ -8,9 +8,9 @@ public class MapNode
     public int x;
     public int y;
 
-    public int movementCost = 10;
+    public int movementCost = 0;
     public int parentCost = 0;
-    int heuristicCost = 10;
+    int heuristicCost = 0;
     public int fullCost;
     public bool isWalkable = true;
     MapNode parentNode = null;
@@ -40,6 +40,14 @@ public class MapNode
     public void SetParent(MapNode node){
         parentNode = node;
         fullCost = movementCost + heuristicCost + parentCost;
+    }
+
+    public void ClearNode()
+    {
+        parentNode = null;
+        movementCost = 10;
+        parentCost = 0;
+        heuristicCost = 10;
     }
 
     public MapNode GetParent()
@@ -102,7 +110,7 @@ public class Map {
 
     public string NeighborsToString(MapNode currentNode)
     {
-        string content = "";
+        string content = currentNode.x + "," + currentNode.y + "\n";
         List<MapNode> neighbors = GetNeighbors(currentNode);
         int levels = 0;
         foreach(MapNode neighbor in neighbors){

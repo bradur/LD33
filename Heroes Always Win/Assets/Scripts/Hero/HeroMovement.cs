@@ -11,11 +11,13 @@ public class HeroMovement : MonoBehaviour {
 
     List<MapNode> openNodes = new List<MapNode>();
     List<MapNode> closedNodes = new List<MapNode>();
-    MapNode currentNode;
+    //MapNode currentNode;
+    MapNode currentGlobalNode;
     MapNode destination;
     List<MapNode> finalPath = new List<MapNode>();
+    List<MapNode> destinations = new List<MapNode>();
     Vector3 targetPosition;
-    float movementInterval = 0.01f;
+    //float movementInterval = 0.01f;
     public float movementDuration = 0.25f;
     float movementTimer = 0f;
     Transform thisTransform;
@@ -32,13 +34,38 @@ public class HeroMovement : MonoBehaviour {
     {
         this.map = map;
         Debug.Log("Hero start at: ["+ x + ", " + y + "]");
-        MapNode currentNode = map.GetNode(x, y);
+        currentGlobalNode = map.GetNode(x, y);
         //debugText = GameObject.FindGameObjectWithTag("DebugText").GetComponent<Text>();
         //debugText.text = map.NeighborsToString(currentNode);
-        destination = map.GetNode(endX, endY);
-        //SearchPath(currentNode);
-        SearchPath(currentNode);
         thisTransform = GetComponent<Transform>();
+        destinations.Add(map.GetNode(endX, endY));
+
+        //SearchPath(currentNode);
+        GameObject[] treasures = GameObject.FindGameObjectsWithTag("Gold");
+
+        List<GameObject> sortedTransforms = new List<GameObject>();
+        for (int i = 0; i < treasures.Length; i += 1)
+        {
+            sortedTransforms.Add(treasures[i]);
+        }
+        sortedTransforms.Sort(delegate(GameObject c1, GameObject c2){
+            return Vector3.Distance(this.transform.position, c1.transform.position).CompareTo(
+                    Vector3.Distance(this.transform.position, c2.transform.position)
+            );
+        });
+        for (int i = sortedTransforms.Count - 1; i > -1; i -= 1)
+        {
+            GameObject gold = sortedTransforms[i];
+            //Debug.Log(Vector3.Distance(this.transform.position, gold.transform.position));
+            MapNode node = map.GetNodeNormalized(gold.transform.position.x, gold.transform.position.z);
+            //Debug.Log("NODE: ["+node.x +","+ node.y + "]");
+            destinations.Add(node);
+        }
+        destination = destinations[destinations.Count - 1];
+        destinations.RemoveAt(destinations.Count - 1);
+        openNodes.Add(currentGlobalNode);
+        SearchPath();
+        
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
     }
 
@@ -52,10 +79,10 @@ public class HeroMovement : MonoBehaviour {
         return Mathf.Abs(node.x - destination.x) * 10 + Mathf.Abs(node.y - destination.y) * 10 - 2;
     }
 
-    void SetDestination(MapNode destination)
+    /*void SetDestination(MapNode destination)
     {
         this.destination = destination;
-    }
+    }*/
 
     IEnumerator Move()
     {
@@ -76,7 +103,9 @@ public class HeroMovement : MonoBehaviour {
             currentTargetNode = finalPath[finalPath.Count - 1];
             if (currentTargetNode.item != null)
             {
-                hero.ProcessNodeItem(currentNode, currentTargetNode);
+                hero.ProcessNodeItem(currentGlobalNode, currentTargetNode);
+
+                //Debug.Log("process!");
                 moving = false;
                 StartCoroutine("Move");
             }
@@ -89,7 +118,18 @@ public class HeroMovement : MonoBehaviour {
         }
         else
         {
-            gameManager.LevelFinished();
+            if (destinations.Count > 0)
+            {
+                destination = destinations[destinations.Count - 1];
+                destinations.RemoveAt(destinations.Count - 1);
+                openNodes.Add(currentGlobalNode);
+                SearchPath();
+            }
+            else
+            {
+                gameManager.LevelFinished();
+            }
+            
         }
     }
 
@@ -102,7 +142,7 @@ public class HeroMovement : MonoBehaviour {
             thisTransform.position = Vector3.MoveTowards(thisTransform.position, targetPosition, movementTimer);
             if(Vector3.Distance(thisTransform.position, targetPosition) < 0.05f){
                 //thisTransform.position = targetPosition;
-                currentNode = currentTargetNode;
+                currentGlobalNode = currentTargetNode;
                 movementTimer = 0;
                 //moving = false;
                 NextNode();
@@ -113,86 +153,124 @@ public class HeroMovement : MonoBehaviour {
 
     void SetFinalPath(MapNode node)
     {
+        finalPath = new List<MapNode>();
+        int i = 300;
+
+        finalPath.Add(node);
         while (true)
         {
             MapNode parentNode = node.GetParent();
             if (parentNode != null)
             {
-//                Debug.Log("[" + parentNode.x + ", " + parentNode.y + "]");
+                node.ClearNode();
+                //                Debug.Log("[" + parentNode.x + ", " + parentNode.y + "]");
                 finalPath.Add(parentNode);
                 node = parentNode;
             }
             else
             {
-                finalPath.RemoveAt(finalPath.Count-1);
+                node.ClearNode();
+                //finalPath.RemoveAt(finalPath.Count-1);
                 break;
             }
+            if (i < 0)
+            {
+                Debug.Log("Loop fail?!");
+                break;
+            }
+            i -= 1;
         }
         NextNode();
         StartCoroutine("Move");
+        openNodes = new List<MapNode>();
+        closedNodes = new List<MapNode>();
     }
 
-    void SearchPath(MapNode currentNode)
+    // IEnumerator SearchPath
+    void SearchPath()
     {
+        //yield return new WaitForSeconds(1f);
         //debugText.text = map.NeighborsToString(currentNode);
-        openNodes.Add(currentNode);                                             // add current node to open list
-        currentNode.list = "o";
+        //openNodes.Add(node);                                             // add current node to open list
+        //node.list = "o";
         MapNode lowestCostNode = null;
         bool targetFound = false;
-        foreach (MapNode neighbor in map.GetNeighbors(currentNode))             // go through neighbors
+
+        foreach (MapNode openNode in openNodes)
         {
-            bool considerOpenListNeighbor = false;
+            if (lowestCostNode == null || openNode.fullCost < lowestCostNode.fullCost)
+            {
+                lowestCostNode = openNode;
+            }
+        }
+        MapNode currentNode = lowestCostNode;
+        openNodes.Remove(currentNode);
+
+        if (currentNode == destination)
+        {
+            targetFound = true;
+            SetFinalPath(currentNode);
+        }
+        else
+        {
+            closedNodes.Add(currentNode);
+
+            List<MapNode> neighbors = map.GetNeighbors(currentNode);
+            foreach (MapNode neighbor in neighbors)             // go through neighbors
+            {
+                bool considerOpenListNeighbor = false;
             
-            if (neighbor.isWalkable && !closedNodes.Contains(neighbor)) {       // if neighbor is reachable and not in closed list
-                bool isInOpenList = openNodes.Contains(neighbor);
-                if (isInOpenList)                                               // if neighbor is in open list
-                {
-                    int gCost = neighbor.movementCost + neighbor.parentCost;
-                    int newGCost = neighbor.movementCost + currentNode.movementCost;
-                    if (gCost > newGCost)
+                if (neighbor.isWalkable && !closedNodes.Contains(neighbor)) {       // if neighbor is reachable and not in closed list
+                    bool isInOpenList = openNodes.Contains(neighbor);
+                    if (isInOpenList)                                               // if neighbor is in open list
                     {
-                        considerOpenListNeighbor = true;
+                        int gCost = neighbor.movementCost + neighbor.parentCost;
+                        int newGCost = neighbor.movementCost + currentNode.movementCost;
+                        if (gCost > newGCost)
+                        {
+                            considerOpenListNeighbor = true;
+                        }
                     }
-                }
-                if (!isInOpenList || considerOpenListNeighbor)
-                {
-                    neighbor.SetParent(currentNode);                             // set current node as neighbors parent
-                    neighbor.SetMovementCost(CalculateMovementCost(currentNode, neighbor));
-                    neighbor.SetHeuristicCost(CalculateHeuristicCost(neighbor, destination));
-                }
-                if (lowestCostNode == null || neighbor.fullCost < lowestCostNode.fullCost)
-                {
-                    lowestCostNode = neighbor;
-                }
-                if (!isInOpenList)
-                {
-                    if (neighbor == destination)
+                    if (!isInOpenList || considerOpenListNeighbor)
                     {
-                        targetFound = true;
-                        //Debug.Log("Target found!");
-                        SetFinalPath(neighbor);
-                        //StopAllCoroutines();
+                        neighbor.SetParent(currentNode);                             // set current node as neighbors parent
+                        neighbor.SetMovementCost(CalculateMovementCost(currentNode, neighbor));
+                        neighbor.SetHeuristicCost(CalculateHeuristicCost(neighbor, destination));
                     }
-                    else
+
+                    if (!isInOpenList)
                     {
-                        openNodes.Add(neighbor);
-                        neighbor.list = "o";
+                        if (neighbor == destination)
+                        {
+                            targetFound = true;
+                            //Debug.Log("Target found!");
+                            SetFinalPath(neighbor);
+                            //StopAllCoroutines();
+                        }
+                        else
+                        {
+                            openNodes.Add(neighbor);
+                            neighbor.list = "o";
+                        }
                     }
                 }
             }
-        }
-        if (!targetFound) {
-            openNodes.Remove(currentNode);
-            currentNode.list = ".";
-            closedNodes.Add(currentNode);
-            currentNode.list = "c";
-            if (lowestCostNode != null)
-            {
-                openNodes.Remove(lowestCostNode);
-                lowestCostNode.list = ".";
-                //SearchPath(lowestCostNode);
-                //Debug.Log("Starting another Coroutine!");
-                SearchPath(lowestCostNode);
+
+            if (!targetFound) {
+                currentNode.list = ".";
+                currentNode.list = "c";
+                if (openNodes.Count > 0)
+                {
+                    lowestCostNode.list = ".";
+                    //SearchPath(lowestCostNode);
+                    //Debug.Log("Starting another Coroutine!");
+                    SearchPath();
+                    //StartCoroutine("SearchPath", currentNode)
+                }
+                else
+                {
+                    Debug.Log("No path found!");
+                }
             }
         }
     }

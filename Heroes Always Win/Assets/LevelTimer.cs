@@ -44,7 +44,7 @@ public class LevelTimer : MonoBehaviour {
     }
 
     public void Init(int timeNeeded){
-        Debug.Log(timeNeeded);
+//        Debug.Log(timeNeeded);
         this.timeNeeded = timeNeeded;
         txtTimePassed.text = "00:00";
         txtTimeNeeded.text = FormatTime(timeNeeded);
